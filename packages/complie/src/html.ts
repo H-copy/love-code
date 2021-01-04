@@ -1,8 +1,8 @@
-import * as valid from './valid'
+import * as assert from './assert'
 import { Node, Prop, nodeType, propType } from './node'
 import { dataFormatter } from './data-fomatter'
 
-export function nodeToTag(node: Node):string{
+export function parse(node: Node):string{
 
   if(node.type === nodeType.DYNAMIC){
     return `{{ ${node.tag} }}`
@@ -13,7 +13,7 @@ export function nodeToTag(node: Node):string{
   }
   
   if(node.type === nodeType.TAG){
-    const child = node.child ? node.child.reduce((acc, next) => { return `${acc} ${nodeToTag(next)}` }, '') : ''
+    const child = node.child ? node.child.reduce((acc, next) => { return `${acc} ${parse(next)}` }, '') : ''
     const props = parseProps(node.props)
     const tag = tagNameFormatter(node.tag)
     return `<${tag} ${props}> ${child} </${tag}>`
@@ -27,13 +27,13 @@ export function nodeToTag(node: Node):string{
   }
 
   if(node.type === nodeType.COMPONENT){
-    let tag = valid.isString(node.tag) ? node.tag : node.tag.name
+    let tag = assert.isString(node.tag) ? node.tag : node.tag.name
     if(!tag){
       throw new Error(`未找到标签名: ${tag}`)
     }
 
     tag = tagNameFormatter(tag)
-    const child = node.child ? node.child.reduce((acc, next) => { return `${acc} ${nodeToTag(next)}` }, '') : ''
+    const child = node.child ? node.child.reduce((acc, next) => { return `${acc} ${parse(next)}` }, '') : ''
     const props = parseProps(node.props)
     return `<${tag} ${props}> ${child} </${tag}>`
   }
@@ -43,7 +43,7 @@ export function nodeToTag(node: Node):string{
 
 function parseProps(props: Prop | Prop[]){
   if(!props){return ''}
-  if(valid.isArray(props)){
+  if(assert.isArray(props)){
     return (props as Prop[]).reduce((acc, prop) => {
       return `${acc} ${parseProp(prop)}`
     }, '')

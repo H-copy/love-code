@@ -10,27 +10,27 @@ export enum nodeType {
 
 
 export class Node{
-  constructor(public tag:any, public type:nodeType, public props:Prop[], public child=[] as any[]){
+  constructor(public tag:any, public type:nodeType, public props = [] as Prop[], public child=[] as Node[]){
     this.tag = tag
     this.type = type
     this.props = props
     this.child = child
   }
 
-  static create(tag:any, type:nodeType, props:Prop[], child:any[]){
+  static create(tag:any, type:nodeType, props?:Prop[], child?:Node[]){
     return new Node(tag, type, props, child)
   } 
 }
 
 export class Prop{
-  constructor(public name:string,  public value: any, public type:propType,){
+  constructor(public type:propType, public name:string,  public value: any,){
     this.name = name
     this.value = value
     this.type = type
   }
 
-  static create(name:string, value:any, type:propType){
-    return new Prop(name, value, type)
+  static create(type:propType, name:string, value:any){
+    return new Prop(type, name, value)
   }
 }
 

@@ -2,7 +2,7 @@ import {
   isArray,
   isObject,
   isFunction,
-} from './valid'
+} from './assert'
 
 
 export function parseBase(data:any):string{
@@ -31,7 +31,7 @@ export function parseArray(arr:any[]):string{
   
 }
 
-export function parseObj(data:Object):string{
+export function parseObj(data:{[s:string]: unknown}):string{
   const d = Object.entries(data).reduce((acc, [key, val]) =>{
 
     let d
