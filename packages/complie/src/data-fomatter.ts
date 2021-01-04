@@ -5,11 +5,11 @@ import {
 } from './valid'
 
 
-export function parseBase(data){
+export function parseBase(data:any):string{
   return JSON.stringify(data)
 }
 
-export function parseArray(arr){
+export function parseArray(arr:any[]):string{
   
   return `[${arr.map(item => {
 
@@ -31,12 +31,12 @@ export function parseArray(arr){
   
 }
 
-export function parseObj(data){
+export function parseObj(data:Object):string{
   const d = Object.entries(data).reduce((acc, [key, val]) =>{
 
-    let d 
+    let d
     
-    const setData = data => {
+    const setData = (data: any) => {
       return `${acc}${acc ? ',' : ''} ${key}:${data}`
     }
 
@@ -65,7 +65,7 @@ export function parseObj(data){
 }
 
 
-export function dataFormatter(data){
+export function dataFormatter(data:any):string{
   if(isObject(data)){
     return parseObj(data)
   }

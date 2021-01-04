@@ -1,0 +1,37 @@
+{
+  "name": "@love-code/complie",
+  "version": "0.1.0",
+  "description": "self node complie",
+  "main": "lib/index.js",
+  "module": "lib/index.esm.js",
+  "scripts": {
+    "dev:rollup": "set NODE_ENV=developemnt&& rollup -c rollup.config.js -w",
+    "build:rollup": "rm -fr lib && set NODE_ENV=production&& rollup -c rollup.config.js",
+    "dev": "gulp --color --gulpfile ./scripts/dev.js",
+    "build": "gulp -cwd ./ --color --gulpfile ./scripts/build.js",
+    "types": "api-extractor run"
+  },
+  "keywords": [
+    "love-code"
+  ],
+  "files": [
+    "lib",
+    "package.json"
+  ],
+  "author": "copy-left",
+  "license": "ISC",
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^17.0.0",
+    "@rollup/plugin-json": "^4.1.0",
+    "@rollup/plugin-node-resolve": "^11.0.1",
+    "@typescript-eslint/eslint-plugin": "^4.11.1",
+    "@typescript-eslint/parser": "^4.11.1",
+    "gulp": "^4.0.2",
+    "gulp-clean": "^0.4.0",
+    "gulp-concat": "^2.6.1",
+    "rollup": "^2.35.1",
+    "rollup-plugin-eslint": "^7.0.0",
+    "rollup-plugin-typescript2": "^0.29.0",
+    "typescript": "^4.1.3"
+  }
+}
