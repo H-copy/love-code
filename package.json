@@ -1,6 +1,7 @@
 {
-  "name": "root",
+  "name": "love-code",
   "private": true,
+  "author": "copy-left",
   "devDependencies": {
     "lerna": "^3.22.1"
   }
