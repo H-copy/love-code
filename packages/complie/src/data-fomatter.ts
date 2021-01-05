@@ -2,10 +2,14 @@ import {
   isArray,
   isObject,
   isFunction,
+  isUndefined,
 } from './assert'
 
 
 export function parseBase(data:any):string{
+  if (isUndefined(data)) {
+    return "undefined"
+  }
   return JSON.stringify(data)
 }
 
@@ -37,7 +41,7 @@ export function parseObj(data:{[s:string]: unknown}):string{
     let d
     
     const setData = (data: any) => {
-      return `${acc}${acc ? ',' : ''} ${key}:${data}`
+      return `${acc}${acc ? ',' : ''}${key}:${data}`
     }
 
     if(isArray(val)){
@@ -72,6 +76,10 @@ export function dataFormatter(data:any):string{
 
   if(isArray(data)){
     return parseArray(data)
+  }
+
+  if (isFunction(data)) {
+    return data.toString()
   }
 
   return parseBase(data)

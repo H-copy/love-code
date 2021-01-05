@@ -11,3 +11,5 @@ export const isString = (data: any): data is string => type(data) === 'string'
 export const isFunction = (data: any): data is (...data:any) => any => type(data) === 'function'
 export const isObject = (data: any): data is {[s:string]: any} => type(data) === 'object'
 export const isEventName = (data: any): data is string => (/^on[A-Z]+[a-z]+$/).test(data)
+export const isUndefined = (data: any): data is undefined => data === undefined
+export const isNull = (data: any): data is null => data === null
