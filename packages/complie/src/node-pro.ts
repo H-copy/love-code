@@ -6,7 +6,7 @@ import {
 } from './node'
 import {
   isArray, isFunction, isString
-} from './assert'
+} from './utils/assert'
 
 function createTypeNode(type:nodeType){
   return (tag: any, props?:Prop|Prop[], child?:Node|Node[]) =>{
@@ -41,4 +41,5 @@ export const createEventProp = (name: string, value: string |((...arg: any[]) =>
 
   return Prop.create(propType.EVENT, name, value)
 }
+
 export const createDynamicProp = createTypeProp(propType.DYNAMIC)

@@ -1,5 +1,4 @@
 
-
 export enum nodeType {
   TAG =  '__TAG',
   COMPONENT =  '__COMPONENT',
@@ -7,7 +6,6 @@ export enum nodeType {
   TEXT =  '__TEXT',
   SELF =  '__SELF'
 }
-
 
 export class Node{
   constructor(public tag:any, public type:nodeType, public props = [] as Prop[], public child=[] as Node[]){

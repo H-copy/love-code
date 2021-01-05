@@ -3,7 +3,8 @@ import {
   isObject,
   isFunction,
   isUndefined,
-} from './assert'
+  isString
+} from './utils/assert'
 
 
 export function parseBase(data:any):string{
@@ -80,6 +81,10 @@ export function dataFormatter(data:any):string{
 
   if (isFunction(data)) {
     return data.toString()
+  }
+
+  if (isString(data)) {
+    return data
   }
 
   return parseBase(data)

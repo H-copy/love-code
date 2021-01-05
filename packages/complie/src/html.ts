@@ -1,4 +1,4 @@
-import * as assert from './assert'
+import * as assert from './utils/assert'
 import { Node, Prop, nodeType, propType } from './node'
 import { dataFormatter } from './data-fomatter'
 import { oneSpace } from '../src/utils'
@@ -56,14 +56,25 @@ export function parseProps(props: Prop | Prop[]) {
 export function parseProp(prop: Prop) {
 
   if (prop.type === propType.NATIVE) {
-    return `${prop.name}=${dataFormatter(prop.value)}`
+    // id='myId'
+    return `${prop.name}='${dataFormatter(prop.value)}'`
   }
 
   if (prop.type === propType.DYNAMIC) {
+
+    // :prop='dynamicVal'
+    if (assert.isString(prop.value)) {
+      return `:${prop.name}='${prop.value}'` 
+    }
+    
+    // :prop='["name", 23]'
+    // :prop='{name: "coco"}'
     return `:${prop.name}='${dataFormatter(prop.value)}'`
   }
 
   if (prop.type === propType.EVENT) {
+    // @click='onClick'
+    // @click='() => {}'
     return `@${prop.name}='${prop.value.toString()}'`
   }
 
