@@ -5,7 +5,7 @@ import {
   propType
 } from './node'
 import {
-  isArray
+  isArray, isFunction, isString
 } from './assert'
 
 function createTypeNode(type:nodeType){
@@ -34,5 +34,11 @@ function createTypeProp(type:propType){
 }
 
 export const createNativeProp = createTypeProp(propType.NATIVE)
-export const createEventProp = createTypeProp(propType.EVENT)
+export const createEventProp = (name: string, value: string |((...arg: any[]) => any)) => {
+  if (!isFunction(value) && !isString(value)) {
+    throw new Error(`事件必须为函数或属性字符: ${value}`)
+  }
+
+  return Prop.create(propType.EVENT, name, value)
+}
 export const createDynamicProp = createTypeProp(propType.DYNAMIC)

@@ -23,7 +23,7 @@
     "declarationMap": false, 
     "declarationDir": "lib",
     "lib": ["esnext", "dom"],
-    "types": ["node"]
+    "types": ["node", "jest"]
   },
   "include": [
     "lib/*.js",
