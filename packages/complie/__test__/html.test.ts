@@ -25,13 +25,13 @@ test('tagNameFormatter', () => {
 describe('parseProp', () => {
 
   test('native', () => {
-    expect(parseProp(createNativeProp('name','coco'))).toBe('name="coco"')
-    expect(parseProp(createNativeProp('age',24))).toBe('age=24')
-    expect(parseProp(createNativeProp('disabled', false))).toBe('disabled=false')
+    expect(parseProp(createNativeProp('name','coco'))).toBe(`name='coco'`)
+    expect(parseProp(createNativeProp('age',24))).toBe(`age='24'`)
+    expect(parseProp(createNativeProp('disabled', false))).toBe(`disabled='false'`)
   })
 
   test('dynamic', () => {
-    expect(parseProp(createDynamicProp('name','coco'))).toBe(`:name='"coco"'`)
+    expect(parseProp(createDynamicProp('name','coco'))).toBe(`:name='coco'`)
     expect(parseProp(createDynamicProp('age',24))).toBe(`:age='24'`)
     expect(parseProp(createDynamicProp('disabled', false))).toBe(`:disabled='false'`)
     expect(parseProp(createDynamicProp('user', {name:'coco', age:24}))).toBe(`:user='{name:"coco",age:24}'`)
@@ -40,6 +40,7 @@ describe('parseProp', () => {
   
   test('event', () => {
     expect(parseProp(createEventProp('click', () => {}))).toBe(`@click='() => { }'`)
+    expect(parseProp(createEventProp('click', 'onClick'))).toBe(`@click='onClick'`)
   })
   
 });
@@ -54,7 +55,7 @@ describe('parseProps', () => {
     createEventProp('click', () => {})
   ]
 
-  expect(parseProps(props)).toBe(` name="coco" :age='24' :disabled='false' @click='() => { }'`)
+  expect(parseProps(props)).toBe(` name='coco' :age='24' :disabled='false' @click='() => { }'`)
   
 });
 

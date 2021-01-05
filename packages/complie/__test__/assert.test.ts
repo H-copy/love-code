@@ -3,8 +3,9 @@ import {
   isString,
   isFunction,
   isObject,
-  isEventName
-} from '../src/assert'
+  isEventName,
+  isSlotName
+} from '../src/utils/assert'
 
 class Loc{
   constructor(public title:string) {
@@ -73,4 +74,10 @@ test('isEventName', () => {
   expect(isEventName({})).toBeFalsy()
   expect(isEventName(new Loc('loc'))).toBeFalsy()
   expect(isEventName('onClick')).toBeTruthy()
+})
+
+test('isSlotName', () => {
+  expect(isSlotName("v-slot")).toBeTruthy()
+  expect(isSlotName("v-slot:default")).toBeTruthy()
+  expect(isSlotName("v-slot:")).toBeFalsy()
 })
