@@ -1,0 +1,5 @@
+__test__
+__test__/**/*
+lib/**/*
+lib/*
+node_modules

@@ -1,0 +1,37 @@
+{
+  "ts-node": {
+    "transpileOnly": true,
+    "compilerOptions": {
+      "module": "commonjs"
+    }
+  },
+  "compilerOptions": {
+    "baseUrl": "",
+    "outDir": "lib",
+    "sourceMap": false,
+    "target": "esnext",
+    "module": "esnext",
+    "moduleResolution": "node",
+    "allowJs": false,
+    "strict": true,
+    "noUnusedLocals": true,
+    "experimentalDecorators": true,
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "removeComments": false,
+    "declaration": true,
+    "declarationMap": false, 
+    "declarationDir": "lib",
+    "lib": ["esnext", "dom"],
+    "types": ["node", "jest"]
+  },
+  "include": [
+    "lib/*.js",
+    "src/**/*.ts",
+  ],
+  "exclude": [
+    "__test__/**/*.ts",
+    "node_modules",
+    "lib"    
+  ]
+}
