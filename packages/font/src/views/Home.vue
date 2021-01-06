@@ -1,34 +1,22 @@
 <template>
   <div class="love-code">
+    <component :is='cp'></component>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
-import {
-  createTagNode,
-  createTextNode,
-  createDynamicProp,
-  html
-} from '@love-code/complie'
-
-const root = createTagNode(
-  'div',
-  createDynamicProp(
-    'style',
-    {
-      color: 'orange',
-      fontSize: '14px'
-    }
-  ),
-  createTextNode('show me')
-)
-
-console.log('>>>', root, html.parse(root))
+import { defineComponent, ref } from 'vue'
+import { T, createCmp } from './T'
 
 export default defineComponent({
   setup() {
-    return {}
+    const cp = ref<any>(T)
+    setTimeout(() => {
+      cp.value = createCmp()
+    }, 1000);
+    return {
+      cp
+    }
   }
 })
 </script>
