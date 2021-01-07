@@ -2,10 +2,6 @@ import {
   VPropType
 } from './prop'
 
-export function isNative(data: any): data is VPropType.NATIVE{
-  return data === VPropType.NATIVE
-}
-
 export function isDynamice(data: any): data is VPropType.DYNAMIC{
   return data === VPropType.DYNAMIC
 }
@@ -32,8 +28,4 @@ export function isEvent(data: any): data is VPropType.EVENT{
 
 export function isRef(data: any): data is VPropType.REF{
   return data === VPropType.REF
-}
-
-export function isSelf(data: any): data is VPropType.SELF{
-  return data === VPropType.SELF
 }

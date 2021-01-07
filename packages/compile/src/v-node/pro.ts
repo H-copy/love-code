@@ -19,7 +19,6 @@ function createTypeNode(type:node.baseNodeType){
       props = [props]
     }
     
-    
     return node.BaseNode.create<VProp>(tag, type, props, child)
   }
 }

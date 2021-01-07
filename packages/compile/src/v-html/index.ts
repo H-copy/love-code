@@ -1,4 +1,7 @@
 import {
+  BaseNode
+} from '../node'
+import {
   VProp,
   isNative,
   isSelf,
@@ -24,7 +27,7 @@ export function vParseProps(props: VProp[]) {
 const parseMap = [
   [ isNative, nativePase ],
   [ isSelf, selfPase ],
-  [ isDynamice, dynamicPase ],
+  [ isDynamice, dynamicParse ],
   [ isEvent, eventParse ]
 ]
 
@@ -62,9 +65,16 @@ function eventParse(prop: VProp) {
   return ''
 }
 
-function dynamicPase(prop: VProp) {
+function dynamicParse(prop: VProp) {
   if (isString(prop.value)) {
       return `:${prop.name}='${prop.value}'` 
     }
   return `:${prop.name}='${dataFormatter(prop.value)}'`
+}
+
+function modelParse(prop: VProp) {
+  if (isString(prop.value)) {
+    return 
+  }
+    return `v-model`
 }

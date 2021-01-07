@@ -20,8 +20,7 @@ function createTypeNode(type:baseNodeType){
       props = [props]
     }
     
-    
-    return BaseNode.create<BaseProp>(tag, type, props, child)
+    return new BaseNode(tag, type, props, child)
   }
 }
 
