@@ -66,6 +66,9 @@ function vDirectiveNameFormatter(d: VDirective) {
   return `${name}${_arg}${_modifiers ? '.' + _modifiers : ''}`
 }
 
+/**
+ * 指令属性
+ */
 export class VDirectiveProp extends VProp {
   constructor(public directive:VDirective,  public value:any){
     super(VPropType.DIRECTIVE, vDirectiveNameFormatter(directive), value)
@@ -94,6 +97,9 @@ interface VPreDirective{
   isDynamic?: boolean
 }
 
+/**
+ * 事件属性
+ */
 export class VEventProp extends VProp{
   constructor(public event:VPreDirective,  public value:VEventValue){
     super(VPropType.EVENT, vDirectiveNameFormatter({...event, name: 'v-on'}), value)
@@ -105,7 +111,9 @@ export class VEventProp extends VProp{
   }
 }
 
-
+/**
+ * 指令 v-bind
+ */
 export class VDynamiceProp extends VProp {
   constructor(public dynamice:string,  public value:VEventValue){
     super(VPropType.DYNAMIC, vDirectiveNameFormatter({name: 'v-bind', arg: dynamice}), value)
@@ -118,7 +126,9 @@ export class VDynamiceProp extends VProp {
 
 }
 
-
+/**
+ * 指令 v-model
+ */
 export class VModelProp extends VProp{
   constructor(public model:VPreDirective,  public value:any){
     super(VPropType.MODEL, vDirectiveNameFormatter({...model, name: 'v-model'}), value)
@@ -130,6 +140,9 @@ export class VModelProp extends VProp{
   }
 }
 
+/**
+ * 指令 v-slot
+ */
 export class VSlotProp extends VProp{
   constructor(public model:VPreDirective,  public value:any){
     super(VPropType.SLOT, vDirectiveNameFormatter({...model, name: 'v-slot'}), value)
@@ -141,7 +154,9 @@ export class VSlotProp extends VProp{
   }
 }
 
-
+/**
+ * 指令 v-if
+ */
 export class VIfProp extends VProp{
   constructor(public value:string | boolean){
     super(VPropType.IF, vDirectiveNameFormatter({name: 'v-if'}), value)
@@ -152,6 +167,9 @@ export class VIfProp extends VProp{
   }
 }
 
+/**
+ * 指令 ref
+ */
 export class VRefProp extends VProp{
   constructor(public value:string | typeof Function){
     super(VPropType.REF, vDirectiveNameFormatter({name: 'ref'}), value)
@@ -201,7 +219,7 @@ function isDynamicFor(d: any): d is VForValue{
 }
 
 /**
- * 生成 v-for 指令结构
+ * 指令 v-for
  * @summary 
  * 构建目标模式：
  * v=for='(item, index) of list' :key='index'

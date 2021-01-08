@@ -29,6 +29,11 @@ export class VNode extends Node<baseNodeType, MixVProp> {
   }
 }
 
+/**
+ * 组件标签
+ * @summary
+ * 例如: <cmp></cmp>
+ */
 export class VTagNode extends VNode{
   constructor(public component:any, public props?:MixVProp[], public children?:MixNode[]) {
     super(baseNodeType.TAG, component, props, children)
@@ -41,7 +46,11 @@ export class VTagNode extends VNode{
   } 
 }
 
-
+/**
+ * 动态文本节点
+ * @summary
+ * 例如: {{ content }}
+ */
 export class VTextNode extends VNode {
   constructor(public component:string) {
     super(baseNodeType.TEXT, component)
@@ -56,7 +65,11 @@ export class VTextNode extends VNode {
   } 
 }
 
-
+/**
+ * 自闭合标签
+ * @summary
+ * 例如: <cmp /> 
+ */
 export class VSelf extends VNode {
   constructor(public tag:any, public props: MixVProp[]) {
     super(baseNodeType.SELF, tag, props)
