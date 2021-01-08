@@ -2,7 +2,7 @@ import { dataFormatter } from '../utils/data-fomatter'
 import {
   Prop
 } from '../prop'
-import { isFunction } from '../utils/assert'
+import { isFunction, isString } from '../utils/assert'
 
 export enum VPropType{
   // vue
@@ -17,7 +17,7 @@ export enum VPropType{
   
 }
 
-export class VProp implements Prop<VPropType, any> {
+export class VProp implements Prop{
   constructor(public type:VPropType, public name:string,  public value?:any){
     this.name = name
     this.value = value
@@ -88,6 +88,8 @@ export class VDirectiveProp extends VProp {
 
 }
 
+
+
 type VEventValue = string | ((...args:any) => any)
 
 
@@ -106,10 +108,14 @@ export class VEventProp extends VProp{
     this.event = event
   }
 
-  static create(name:VPreDirective, value:VEventValue){
+  static create(name:VPreDirective | string, value:VEventValue){
+    if (isString(name)) {
+      name = {arg: name}
+    }
     return new VEventProp(name, value)
   }
 }
+
 
 /**
  * 指令 v-bind
@@ -126,19 +132,26 @@ export class VDynamiceProp extends VProp {
 
 }
 
+
 /**
  * 指令 v-model
  */
 export class VModelProp extends VProp{
-  constructor(public model:VPreDirective,  public value:any){
-    super(VPropType.MODEL, vDirectiveNameFormatter({...model, name: 'v-model'}), value)
+  constructor(public model:string,  public value:any){
+    super(VPropType.MODEL, vDirectiveNameFormatter({arg: model, name: 'v-model'}), value)
     this.model = model
   }
 
-  static create(model:VPreDirective, value:any){
+  static create(model:any, value?:any){
+    // 匹配参数模式 v-model='value'
+    if (!value && model) {
+      value = model
+      model = ''
+    }
     return new VModelProp(model, value)
   }
 }
+
 
 /**
  * 指令 v-slot
@@ -150,9 +163,11 @@ export class VSlotProp extends VProp{
   }
 
   static create(model:VPreDirective, value:any){
-    return new VModelProp(model, value)
+    return new VSlotProp(model, value)
   }
 }
+
+
 
 /**
  * 指令 v-if
@@ -166,6 +181,8 @@ export class VIfProp extends VProp{
     return new VIfProp(value)
   }
 }
+
+
 
 /**
  * 指令 ref
@@ -186,6 +203,7 @@ export class VRefProp extends VProp{
     return new VRefProp(value)
   }
 }
+
 
 
 export interface VForValue{
@@ -240,7 +258,7 @@ export class VForProp extends VProp{
     return `v-for='(${item}${_index}) of ${_value}' ${this._key.stringify()}`
   }
   
-  static create(model:VPreDirective, value:any){
-    return new VModelProp(model, value)
+  static create(model:VForValue | VForValueDynamice){
+    return new VForProp(model)
   }
 }

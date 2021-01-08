@@ -1,9 +1,16 @@
-export interface Prop<T, V>{
+export interface Prop {
   name: string
-  value?: V
-  type: T
+  type: string
+  value?: any
   stringify(): string
   [s:string]:any
+}
+
+type PropsType = '__props'
+
+export interface Props{
+  [s: string]: Prop | PropsType
+  __isProps: PropsType
 }
 
 export enum basePropType {
@@ -13,7 +20,7 @@ export enum basePropType {
 }
 
 
-export class BaseProp implements Prop<basePropType, string>{
+export class BaseProp implements Prop{
   constructor(public type:basePropType, public name:string,  public value?:string){
     this.name = name
     this.value = value
@@ -29,6 +36,7 @@ export class BaseProp implements Prop<basePropType, string>{
   }
 }
 
+
 export class BaseNativeProp extends BaseProp{
   constructor(public name: string, public value?: string) {
     super(basePropType.NATIVE, name, value)
@@ -43,6 +51,7 @@ export class BaseNativeProp extends BaseProp{
   }
 }
 
+
 export class BaseSelfProp extends BaseProp{
   constructor(public name: string, public value?: string) {
     super(basePropType.SELF, name, value)
@@ -56,6 +65,8 @@ export class BaseSelfProp extends BaseProp{
     return new BaseSelfProp(name, value)
   }
 }
+
+
 
 export class BaseDynamiceProp extends BaseProp{
   constructor(public name: string, public value?: string) {

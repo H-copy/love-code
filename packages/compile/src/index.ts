@@ -1,4 +1,5 @@
-export * as node from './node'
-export * as prop from './prop'
-
+export * from './node'
+export * from './prop'
+export * from './v-node'
+export * from './v-prop'
 

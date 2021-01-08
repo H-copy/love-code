@@ -1,22 +1,19 @@
 import { isArray } from "../utils/assert"
-
 import {
-  BaseProp
+  Prop,
+  Props,
+  listToObj,
+  propListOrObj
 } from '../prop'
 
-interface Prop {
-  name: string
-  type: any
-  value?: any
-  stringify(): string
-  [s:string]:any
-}
-
-export interface Node<NT, PT extends Prop>{
+export interface Node{
   tag: string
-  type: NT
-  props?: PT[]
-  children?: Node<NT, PT>[]
+  type: string
+  props?: Props
+  children?: Node[]
+  parent?: Node
+  addProp(...p:Prop[]):Node
+  addChild(...n:Node[]):Node
   stringify():string
   propsStringify(): string
   childenStringify(): string
@@ -30,16 +27,30 @@ export enum baseNodeType {
   CDATA = '__CDATA'
 }
 
-export class Node<NT, PT extends Prop>{
-  constructor(public type:NT, public tag:string, public props?:PT[], public children?:Node<NT, PT>[]){
+
+export class Node{
+  constructor(public type:string, public tag:string, public props?:Props, public children?:Node[]){
     this.tag = tag
     this.type = type
-    this.props = props
-    this.children = children
+    this.props = props || {}
+    this.children = []
+    children && this.addChild(...children)
   }
 
+  addProp(...p: Prop[]): Node{
+    const _props = listToObj(...p)
+    this.props = this.props ? { ...this.props, ..._props } : _props
+    return this
+  }
+
+  addChild(...n: Node[]): Node{
+    n.map(item => item.parent = this)
+    this.children = this.children ? [...this.children, ...n] : n
+    return this
+  }
+  
   propsStringify() {
-    return this.props ? this.props.map(prop => prop.stringify()).join(' ') : ''
+    return this.props ? Object.values(this.props).map(prop => prop.stringify()).join(' ') : ''
   }
 
   childenStringify():string {
@@ -49,28 +60,28 @@ export class Node<NT, PT extends Prop>{
   stringify():string {
     if (!this.tag) {
       throw new Error(`未找到标签名: ${this.tag}`)
-  }
-    return `<${this.tag} ${this.propsStringify()}> ${this.childenStringify()} </${this.tag}>`
+    }   
+    const _props = this.propsStringify()
+    const _children = this.childenStringify()
+    return `<${this.tag}${ _props ? ' ' + _props : '' }>${_children ? ' ' + _children + ' ' : ''}</${this.tag}>`
   }
 }
 
 
-
-
-export class BaseNode extends Node<baseNodeType, BaseProp>{
-  constructor(public type:baseNodeType, public tag:string, public props = [] as BaseProp[], public children=[] as BaseNode[]){
+export class BaseNode extends Node{
+  constructor(public type:baseNodeType, public tag:string, public props = {} as Props, public children=[] as Node[]){
     super(type, tag, props, children)
   }
 }
 
 
 export class BaseTagNode extends BaseNode {
-  constructor(public tag:string, public props = [] as BaseProp[], public children = [] as BaseNode[]) {
+  constructor(public tag:string, public props = {} as Props, public children = [] as Node[]) {
     super(baseNodeType.TAG, tag, props, children)
   }
   
-  static create(tag:string, props?: BaseProp | BaseProp[], children?:BaseNode| BaseNode[]){
-    const _props = isArray(props) ? props : props ? [props] : []
+  static create(tag:string, props?: Props | Prop[], children?:BaseNode| BaseNode[]){
+    const _props = propListOrObj(props)
     const _children = isArray(children) ? children : children ? [children] : []
     return new BaseTagNode(tag, _props, _children)
   } 
@@ -93,16 +104,15 @@ export class BaseTextNode extends BaseNode {
 
 
 export class BaseSelf extends BaseNode {
-  constructor(public tag:string, public props = [] as BaseProp[]) {
+  constructor(public tag:string, public props = {} as Props) {
     super(baseNodeType.SELF, tag, props)
   }
 
   stringify() {
-    return `<${this.tag} ${this.propsStringify()} />`
+    return `<${this.tag} ${this.propsStringify()}/>`
   }
   
-  static create(tag:string, props?:BaseProp | BaseProp[]){
-    const _props = isArray(props) ? props : props ? [props] : []
-    return new BaseSelf(tag, _props)
+  static create(tag:string, props?:Props | Prop | Prop[]){
+    return new BaseSelf(tag, propListOrObj(props))
   } 
 }

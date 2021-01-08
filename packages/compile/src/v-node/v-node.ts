@@ -1,8 +1,8 @@
 import { isArray, isString } from '../utils/assert'
+import { tagNameFormatter } from '../utils'
 import {
   Node,
-  baseNodeType,
-  BaseNode
+  baseNodeType
 } from '../node'
 
 import {
@@ -13,18 +13,15 @@ import {
   VProp,
 } from '../v-prop'
 
-
-
 function getComponentTagName(cmp: any):string {
   return isString(cmp) ? cmp : isString(cmp.name) ? cmp.name : ''
 }
 
 export type MixVProp = VProp | BaseProp
-export type MixNode = VNode | BaseNode
 
-export class VNode extends Node<baseNodeType, MixVProp> {
-  constructor(public type:baseNodeType, public component:any, public props?:MixVProp[], public children?:MixNode[]){
-    super(type, getComponentTagName(component), props, children)
+export class VNode extends Node{
+  constructor(public type:baseNodeType, public component:any, public props?:MixVProp[], public children?:Node[]){
+    super(type, tagNameFormatter(getComponentTagName(component)), props, children)
     this.component = component
   }
 }
@@ -35,16 +32,17 @@ export class VNode extends Node<baseNodeType, MixVProp> {
  * 例如: <cmp></cmp>
  */
 export class VTagNode extends VNode{
-  constructor(public component:any, public props?:MixVProp[], public children?:MixNode[]) {
+  constructor(public component:any, public props?:MixVProp[], public children?:Node[]) {
     super(baseNodeType.TAG, component, props, children)
   }
 
-  static create(tag:any, props?: MixVProp | MixVProp[], children?:MixNode| MixNode[]){
+  static create(tag:any, props?: MixVProp | MixVProp[], children?:Node| Node[]){
     const _props = isArray(props) ? props : props ? [props] : []
     const _children = isArray(children) ? children : children ? [children] : []
     return new VTagNode(tag, _props, _children)
   } 
 }
+
 
 /**
  * 动态文本节点
@@ -65,6 +63,7 @@ export class VTextNode extends VNode {
   } 
 }
 
+
 /**
  * 自闭合标签
  * @summary
@@ -76,7 +75,7 @@ export class VSelf extends VNode {
   }
 
   stringify() {
-    return `<${this.tag} ${this.propsStringify()} />`
+    return `<${this.tag} ${this.propsStringify()}/>`
   }
   
   static create(tag:any, props?:MixVProp | MixVProp[]){

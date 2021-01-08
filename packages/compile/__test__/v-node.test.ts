@@ -5,6 +5,7 @@ import {
 } from '../src/v-node'
 
 import {
+  baseNodeType,
   BaseTextNode
 } from '../src/node'
 
@@ -25,8 +26,14 @@ import {
 } from '../src/prop'
 
 describe('VTextNode', () => {
-  test('stringify', () => {
-    expect(VTextNode.create('message').stringify()).toBe(`{{ message }}`)
+  test('type', () => {
+    expect(VTextNode.create('message').type).toBe(baseNodeType.TEXT)
+  })
+  test('tag stringify', () => {
+    expect(VTagNode.create('AButton').stringify()).toBe(`<a-button></a-button>`)
+  })
+  test('component stringify', () => {
+    expect(VTagNode.create({name: "AButton"}).stringify()).toBe(`<a-button></a-button>`)
   })
 })
 
