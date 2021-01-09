@@ -6,11 +6,8 @@ export interface Prop {
   [s:string]:any
 }
 
-type PropsType = '__props'
-
-export interface Props{
-  [s: string]: Prop | PropsType
-  __isProps: PropsType
+export interface Props<T = Prop>{
+  [s: string]: T
 }
 
 export enum basePropType {

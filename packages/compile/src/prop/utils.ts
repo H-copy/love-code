@@ -5,8 +5,7 @@ import {
 } from '../utils/assert'
 import {
   basePropType,
-  Prop,
-  Props
+  Prop
 } from './prop'
 
 export function isProp(data: any): data is Prop{
@@ -25,23 +24,22 @@ export function isSelfProp(data: any): data is basePropType.SELF{
   return data === basePropType.SELF
 }
 
-export function listToObj(...p: Prop[]):Props {
-  return p.reduce((acc:Props, next:Prop) => ({...acc, [next.name]:next}), {})
+export function listToObj<T extends Prop>(...p: T[]):{[s:string]: T} {
+  return p.reduce((acc, next) => ({...acc, [next.name]:next}), {})
 }
 
-export function propListOrObj(props?: Props | Prop[]):Props {
-  let _props:Props = {}
+export function propListOrObj<U extends Prop >(props?: U | U[]):{[s:string]: U} {
+  let _props = {}
 
-  if (!props) {
-    _props = {}
-  }
-  
   if (isArray(props)) {
-    _props = listToObj(...props)
+    _props = listToObj<U>(...props)
   }
 
   if (isObject(props)) {
-    _props = props as Props
+    props = props as U
+    _props = {
+      [props.name]: props
+    }
   }
 
   return _props

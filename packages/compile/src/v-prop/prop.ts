@@ -1,6 +1,8 @@
 import { dataFormatter } from '../utils/data-fomatter'
 import {
-  Prop
+  Prop,
+  Props,
+  BaseProp,
 } from '../prop'
 import { isFunction, isString } from '../utils/assert'
 
@@ -16,6 +18,9 @@ export enum VPropType{
   DYNAMIC = '__DYNAMIC',
   
 }
+
+export type MixVProp = VProp | BaseProp
+export type VProps = Props<MixVProp>
 
 export class VProp implements Prop{
   constructor(public type:VPropType, public name:string,  public value?:any){

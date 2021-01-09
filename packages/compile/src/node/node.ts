@@ -80,7 +80,7 @@ export class BaseTagNode extends BaseNode {
     super(baseNodeType.TAG, tag, props, children)
   }
   
-  static create(tag:string, props?: Props | Prop[], children?:BaseNode| BaseNode[]){
+  static create(tag:string, props?:Prop | Prop[], children?:BaseNode| BaseNode[]){
     const _props = propListOrObj(props)
     const _children = isArray(children) ? children : children ? [children] : []
     return new BaseTagNode(tag, _props, _children)
@@ -112,7 +112,7 @@ export class BaseSelf extends BaseNode {
     return `<${this.tag} ${this.propsStringify()}/>`
   }
   
-  static create(tag:string, props?:Props | Prop | Prop[]){
+  static create(tag:string, props?:Prop | Prop[]){
     return new BaseSelf(tag, propListOrObj(props))
   } 
 }
