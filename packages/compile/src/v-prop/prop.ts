@@ -1,12 +1,11 @@
 import { dataFormatter } from '../utils/data-fomatter'
 import {
   Prop,
-  Props,
   BaseProp,
 } from '../prop'
 import { isFunction, isString } from '../utils/assert'
 
-export enum VPropType{
+export enum VPropType {
   // vue
   FOR = '__FOR',
   SLOT = '__SLOT',
@@ -20,7 +19,6 @@ export enum VPropType{
 }
 
 export type MixVProp = VProp | BaseProp
-export type VProps = Props<MixVProp>
 
 export class VProp implements Prop{
   constructor(public type:VPropType, public name:string,  public value?:any){
@@ -108,9 +106,13 @@ interface VPreDirective{
  * 事件属性
  */
 export class VEventProp extends VProp{
-  constructor(public event:VPreDirective,  public value:VEventValue){
+  public directive: VDirective
+  constructor(event:VPreDirective,  public value:VEventValue){
     super(VPropType.EVENT, vDirectiveNameFormatter({...event, name: 'v-on'}), value)
-    this.event = event
+    this.directive = {
+      name: 'v-on',
+      ...event
+    }
   }
 
   static create(name:VPreDirective | string, value:VEventValue){
@@ -126,9 +128,13 @@ export class VEventProp extends VProp{
  * 指令 v-bind
  */
 export class VDynamiceProp extends VProp {
-  constructor(public dynamice:string,  public value:VEventValue){
+  public directive: VDirective
+  constructor(dynamice:string,  public value:VEventValue){
     super(VPropType.DYNAMIC, vDirectiveNameFormatter({name: 'v-bind', arg: dynamice}), value)
-    this.dynamice = dynamice
+    this.directive = {
+      name: 'v-bind',
+      arg: dynamice
+    }
   }
 
   static create(dynamice:string, value:VEventValue){
@@ -142,9 +148,13 @@ export class VDynamiceProp extends VProp {
  * 指令 v-model
  */
 export class VModelProp extends VProp{
-  constructor(public model:string,  public value:any){
+  public directive: VDirective
+  constructor(model:string,  public value:any){
     super(VPropType.MODEL, vDirectiveNameFormatter({arg: model, name: 'v-model'}), value)
-    this.model = model
+    this.directive = {
+      name: 'v-model',
+      arg: model
+    }
   }
 
   static create(model:any, value?:any){
@@ -162,9 +172,13 @@ export class VModelProp extends VProp{
  * 指令 v-slot
  */
 export class VSlotProp extends VProp{
-  constructor(public model:VPreDirective,  public value:any){
+  public directive: VDirective
+  constructor(model:VPreDirective,  public value:any){
     super(VPropType.SLOT, vDirectiveNameFormatter({...model, name: 'v-slot'}), value)
-    this.model = model
+    this.directive = {
+      name: 'v-slot',
+      ...model
+    }
   }
 
   static create(model:VPreDirective, value:any){
@@ -178,8 +192,12 @@ export class VSlotProp extends VProp{
  * 指令 v-if
  */
 export class VIfProp extends VProp{
+  public directive: VDirective
   constructor(public value:string | boolean){
     super(VPropType.IF, vDirectiveNameFormatter({name: 'v-if'}), value)
+    this.directive = {
+      name: 'v-if',
+    }
   }
 
   static create(value:string | boolean){
@@ -193,8 +211,12 @@ export class VIfProp extends VProp{
  * 指令 ref
  */
 export class VRefProp extends VProp{
+  public directive: VDirective
   constructor(public value:string | typeof Function){
     super(VPropType.REF, vDirectiveNameFormatter({name: 'ref'}), value)
+    this.directive = {
+      name: 'ref',
+    }
   }
 
   stringify() {

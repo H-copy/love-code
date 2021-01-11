@@ -1,15 +1,13 @@
 import { isArray } from "../utils/assert"
 import {
   Prop,
-  Props,
-  listToObj,
   propListOrObj
 } from '../prop'
 
 export interface Node{
   tag: string
   type: string
-  props?: Props
+  props?: Prop[]
   children?: Node[]
   parent?: Node
   addProp(...p:Prop[]):Node
@@ -29,17 +27,16 @@ export enum baseNodeType {
 
 
 export class Node{
-  constructor(public type:string, public tag:string, public props?:Props, public children?:Node[]){
+  constructor(public type:string, public tag:string, public props?:Prop[], public children?:Node[]){
     this.tag = tag
     this.type = type
-    this.props = props || {}
+    this.props = props || []
     this.children = []
     children && this.addChild(...children)
   }
 
   addProp(...p: Prop[]): Node{
-    const _props = listToObj(...p)
-    this.props = this.props ? { ...this.props, ..._props } : _props
+    this.props = this.props ? [...this.props, ...p] : p
     return this
   }
 
@@ -69,14 +66,14 @@ export class Node{
 
 
 export class BaseNode extends Node{
-  constructor(public type:baseNodeType, public tag:string, public props = {} as Props, public children=[] as Node[]){
+  constructor(public type:baseNodeType, public tag:string, public props = [] as Prop[], public children=[] as Node[]){
     super(type, tag, props, children)
   }
 }
 
 
 export class BaseTagNode extends BaseNode {
-  constructor(public tag:string, public props = {} as Props, public children = [] as Node[]) {
+  constructor(public tag:string, public props = [] as Prop[], public children = [] as Node[]) {
     super(baseNodeType.TAG, tag, props, children)
   }
   
@@ -104,7 +101,7 @@ export class BaseTextNode extends BaseNode {
 
 
 export class BaseSelf extends BaseNode {
-  constructor(public tag:string, public props = {} as Props) {
+  constructor(public tag:string, public props = [] as Prop[]) {
     super(baseNodeType.SELF, tag, props)
   }
 

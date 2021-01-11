@@ -10,7 +10,6 @@ import {
 } from '../prop'
 
 import {
-  VProps,
   MixVProp
 } from '../v-prop'
 
@@ -18,8 +17,9 @@ function getComponentTagName(cmp: any):string {
   return isString(cmp) ? cmp : isString(cmp.name) ? cmp.name : ''
 }
 
+
 export class VNode extends Node{
-  constructor(public type:baseNodeType, public component:any, public props?:VProps, public children?:Node[]){
+  constructor(public type:baseNodeType, public component:any, public props?:MixVProp[], public children?:Node[]){
     super(type, tagNameFormatter(getComponentTagName(component)), props, children)
     this.component = component
   }
@@ -31,7 +31,7 @@ export class VNode extends Node{
  * 例如: <cmp></cmp>
  */
 export class VTagNode extends VNode{
-  constructor(public component:any, public props?:VProps, public children?:Node[]) {
+  constructor(public component:any, public props?:MixVProp[], public children?:Node[]) {
     super(baseNodeType.TAG, component, props, children)
   }
 
@@ -50,6 +50,7 @@ export class VTagNode extends VNode{
 export class VTextNode extends VNode {
   constructor(public component:string) {
     super(baseNodeType.TEXT, component)
+    this.tag = component
   }
 
   stringify() {
@@ -68,7 +69,7 @@ export class VTextNode extends VNode {
  * 例如: <cmp /> 
  */
 export class VSelf extends VNode {
-  constructor(public tag:any, public props:VProps) {
+  constructor(public tag:any, public props?:MixVProp[]) {
     super(baseNodeType.SELF, tag, props)
   }
 

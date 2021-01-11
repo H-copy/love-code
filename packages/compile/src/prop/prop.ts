@@ -6,10 +6,6 @@ export interface Prop {
   [s:string]:any
 }
 
-export interface Props<T = Prop>{
-  [s: string]: T
-}
-
 export enum basePropType {
   NATIVE = '__NATIVE',
   SELF = '__SELF',
