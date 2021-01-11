@@ -18,7 +18,15 @@ export enum VPropType {
   
 }
 
-export type MixVProp = VProp | BaseProp
+export type MixVProp = VProp 
+  | BaseProp
+  | VDirectiveProp
+  | VModelProp
+  | VSlotProp
+  | VEventProp
+  | VForProp
+  | VIfProp
+  | VRefProp
 
 export class VProp implements Prop{
   constructor(public type:VPropType, public name:string,  public value?:any){
