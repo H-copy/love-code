@@ -14,8 +14,7 @@
 </style>
 <template>
   <div class="love-code">
-
-    <HtmlTag :root='Root' />
+    <!-- <HtmlTag :root='Root' /> -->
     <Dragable>
       <div class='box'></div>
     </Dragable>
@@ -25,19 +24,19 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 // import VHN from '../components/VHN.vue'
-import { Root } from './model'
-import HtmlTag from '../components/html-tag'
+// import { Root } from './model'
+// import HtmlTag from '../components/html-tag'
 import Dragable from '../components/dragable/index.vue'
 
 export default defineComponent({
   components: {
     // VHN,
-    HtmlTag,
+    // HtmlTag,
     Dragable
   },
   setup() {
     return {
-      Root,
+      // Root,
     }
   }
 })

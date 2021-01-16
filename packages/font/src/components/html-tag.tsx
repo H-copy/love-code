@@ -1,13 +1,18 @@
-import { VTextNode, MixVProp, BaseProp, isVDynamiceProp } from '@love-code/complie'
-import { defineComponent, reactive } from 'vue'
+import {
+  VTextNode,
+  MixVProp,
+  BaseProp,
+  isVDynamiceProp
+} from '@love-code/complie'
+
+import {
+  defineComponent,
+  reactive
+} from 'vue'
 
 function getJsxProp(p: MixVProp[], globalCtx: any, localCtx: any) {
-
   const props: any = {}
-  console.log('>>>', localCtx)
-
-  for (let i = p.length; i < p.length; i++) {
-
+  for (let i = p.length; i < p.length; i += 1) {
     const current = p[i]
 
     if (current instanceof BaseProp) {
@@ -15,18 +20,11 @@ function getJsxProp(p: MixVProp[], globalCtx: any, localCtx: any) {
     }
 
     if (isVDynamiceProp(current)) {
-      props[current.name] = globalCtx[current.value]
+      props[current.name] = globalCtx[current.value as string]
     }
-
   }
-
-
-  return
+  return undefined
 }
-
-
-
-
 
 function render(n: any, globalCtx: any, localCtx: any = {}) {
   const _localCtx = reactive({ ...localCtx })
