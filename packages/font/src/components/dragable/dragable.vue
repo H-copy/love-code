@@ -2,9 +2,16 @@
 $color = orange
 .dragable{
   position absolute
-  border 1px dashed $color
+  border 1px dashed transparent
   $pointSize=10px
+  &:hover{
+    border-color $color
+    .dragable-point{
+      opacity 1
+    }
+  }
   &-point{
+    opacity 0
     position absolute
     width $pointSize
     height $pointSize
@@ -82,7 +89,7 @@ $color = orange
   </div>
 </template>
 <script lang='ts'>
-import { defineComponent } from 'vue'
+import { defineComponent, PropType, watch } from 'vue'
 import {
   useMoveBlock,
   useMovePoint,
@@ -91,22 +98,40 @@ import {
 } from './hooks'
 
 export default defineComponent({
-  setup(){
+  props: {
+    unit: {
+      type: String,
+      default: 'px'
+    },
+    data: {
+      type: Object as PropType<MoveBlock>,
+      default: () => ({})
+    }
+  },
+  setup(props, ctx){
     const {
+      unit,
       moveBlock,
       moveBlockStyle,
       updateBlock,
       mouseMoveLock,
       onMouseDown
-    } = useMoveBlock()
+    } = useMoveBlock(ctx)
     
     const update = (d: MoveBlock) => {
       updateBlock(mouseMoveLock(d))
     }
     const {
-      startState,
       onPointMousedown
-    } = useMovePoint(update)
+    } = useMovePoint(ctx, update)
+
+    watch(() => props.unit, () => {
+      unit.value = props.unit
+    }, { immediate: true })
+    
+    console.log(props.data)
+    updateBlock(props.data)
+    
     return {
       movePoints,
       moveBlockStyle,

@@ -1,4 +1,4 @@
-import { ref, computed } from 'vue'
+import { ref, computed, SetupContext } from 'vue'
 
 type MovePoint = 'topLeft'
   | 'topRight'
@@ -107,7 +107,7 @@ export const bottomRight: MoveEvent = (diff: Position, start: StartState) => {
 }
 
 
-export function useMovePoint(updateBlock: (d: MoveBlock) => void) {
+export function useMovePoint(ctx: SetupContext, updateBlock: (d: MoveBlock) => void) {
   const eventMap: { [s: string]: MoveEvent } = {
     topLeft,
     topRight,
@@ -144,11 +144,13 @@ export function useMovePoint(updateBlock: (d: MoveBlock) => void) {
       if (setFn) {
         updateBlock(setFn(diff, startState.value))
       }
+      ctx.emit('pointMouseMove', { ...diff })
     }
-
+    ctx.emit('pointMouseDown', { ...startState.value })
     document.addEventListener('mousemove', cb)
     document.addEventListener('mouseup', () => {
       document.removeEventListener('mousemove', cb)
+      ctx.emit('pointMouseUp')
     })
   }
 
@@ -158,7 +160,7 @@ export function useMovePoint(updateBlock: (d: MoveBlock) => void) {
   }
 }
 
-export function useMoveBlock() {
+export function useMoveBlock(ctx: SetupContext) {
   const unit = ref('px')
   const moveBlock = ref<MoveBlock>({
     width: 120,
@@ -178,6 +180,7 @@ export function useMoveBlock() {
       _data.height = 0
     }
     moveBlock.value = _data
+    ctx.emit('update', { ...moveBlock.value })
   }
 
   // 防止尺寸为零时，元素移动
@@ -216,28 +219,30 @@ export function useMoveBlock() {
       startY: e.clientY
     }
     const { top, left } = moveBlock.value
-    
+
     updateBlock({
       top: top + diff.y,
       left: left + diff.x
     })
+    ctx.emit('blockMouseDown', moveBlock.value)
   }
-  
+
   const onMouseUp = () => {
+    ctx.emit('blockMouseUp')
     document.removeEventListener('mousemove', onMouseMove)
     document.removeEventListener('moouseup', onMouseUp)
   }
-  
+
   const onMouseDown = (e: MouseEvent) => {
     prePosition.value = {
       startX: e.clientX,
       startY: e.clientY
     }
-    
+    ctx.emit('blockMouseDown', { ...prePosition.value })
     document.addEventListener('mousemove', onMouseMove)
     document.addEventListener('mouseup', onMouseUp)
   }
-  
+
   return {
     unit,
     moveBlock,
