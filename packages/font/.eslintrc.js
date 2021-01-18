@@ -12,6 +12,7 @@ module.exports = {
     ecmaVersion: 2020,
   },
   rules: {
+    'semi': ["warn", "never", { "beforeStatementContinuationChars": "always"}],
     'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'space-before-blocks': 'off',
@@ -21,7 +22,7 @@ module.exports = {
     'no-multiple-empty-lines': 'off',
     'arrow-body-style': 'off',
     'no-trailing-spaces': 'off',
-    'semi': ["warn", "never", { "beforeStatementContinuationChars": "always"}],
+    'import/prefer-default-export': 'off',
     '@typescript-eslint/no-explicit-any': 'off',
     '@typescript-eslint/member-delimiter-style': 'off'
   },

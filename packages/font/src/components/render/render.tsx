@@ -2,7 +2,8 @@ import {
   VTextNode,
   MixVProp,
   BaseProp,
-  isVDynamiceProp
+  isVDynamiceProp,
+  BaseNativeProp
 } from '@love-code/complie'
 
 import {
@@ -12,18 +13,17 @@ import {
 
 function getJsxProp(p: MixVProp[], globalCtx: any, localCtx: any) {
   const props: any = {}
-  for (let i = p.length; i < p.length; i += 1) {
+  for (let i = 0; i < p.length; i += 1) {
     const current = p[i]
-
     if (current instanceof BaseProp) {
       props[current.name] = current.value
     }
-
     if (isVDynamiceProp(current)) {
       props[current.name] = globalCtx[current.value as string]
     }
   }
-  return undefined
+
+  return props
 }
 
 function render(n: any, globalCtx: any, localCtx: any = {}) {
@@ -41,15 +41,7 @@ function render(n: any, globalCtx: any, localCtx: any = {}) {
 export default defineComponent({
   props: ['root'],
   setup(props) {
-    const globalCtx = reactive({
-      userName: 'init'
-    })
-    setTimeout(() => {
-      console.log('change')
-      globalCtx.userName = 'new name'
-      const p = props.root.children
-      p.push(props.root.children[0])
-    }, 1000)
+    const globalCtx = reactive({})
     return () => render(props.root, globalCtx)
   }
 })

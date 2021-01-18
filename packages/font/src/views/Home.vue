@@ -1,10 +1,13 @@
 <style lang='stylus' scoped>
 .love-code{
-  padding 20px
+  box-sizing border-box
+  width  100vw
+  height 100vh
   position relative
-  // display flex;
-  // justify-content center;
-  // text-align center;
+  display grid
+  grid-template-columns 200px auto 200px
+  grid-template-rows 100%
+  background #171A21
 }
 .box{
   box-size border-box
@@ -12,30 +15,74 @@
   height 200px
   border 1px solid #eee
 }
+
+.lc{
+  &-left{
+    background #eee
+  }
+  &-right{
+    background orange
+  }
+  &-content{
+    position relative
+  }
+}
+
 </style>
 <template>
   <div class="love-code">
-    <!-- <HtmlTag :root='Root' /> -->
-    <Dragable :data="cmpSize" @update='moveBlockUpdate'>
-      <div class='box' :style='style'></div>
-    </Dragable>
+   
+    <div class='lc-left'>
+      <CmpPanel @select='onSelect' />
+    </div>
+    <div class='lc-content'>
+      <BabySitter>
+        <Render :root='root' />
+        <Dragable :data="cmpSize" @update='moveBlockUpdate'>
+          <div class='box' :style='style'></div>
+        </Dragable>
+      </BabySitter>
+    </div>
+    <div class='lc-right'>
+      <PropPanel />
+    </div>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, computed, ref } from 'vue'
-// import VHN from '../components/VHN.vue'
-// import { Root } from './model'
-// import HtmlTag from '../components/html-tag'
+import { useStore } from 'vuex'
+import {
+  Node,
+  baseTagNode,
+  baseTextNode,
+  baseNativeProp,
+  vTagNode
+} from '@love-code/complie'
 import { MoveBlock, Dragable } from '../components/dragable'
+import { BabySitter } from '../components/baby-sitter'
+import CmpPanel from './cmp-panel.vue'
+import { Cmp } from '../types'
+import PropPanel from './prop-panel.vue'
+import { Render } from '../components/render'
 
 export default defineComponent({
   components: {
-    // VHN,
-    // HtmlTag,
-    Dragable
+    CmpPanel,
+    PropPanel,
+    Dragable,
+    BabySitter,
+    Render
   },
   setup() {
+    const store = useStore()
+    const pushNewNode = (n: Node) => {
+      store.commit('pushNewNode', n)
+    }
+    
+    const root = ref<Node>(baseTagNode('div', [
+      baseNativeProp('style', 'color:#fff')
+    ], baseTextNode('show me')))
     const cmpSize = ref({
       width: 200,
       height: 200
@@ -47,19 +94,31 @@ export default defineComponent({
         height: `${height}px`
       }
     })
-
+  
     const moveBlockUpdate = (d: MoveBlock) => {
       cmpSize.value = {
         width: d.width,
         height: d.height
       }
     }
+
+    const onSelect = (d: {key: string, cmp: Cmp}) => {
+      const _n = vTagNode(d.cmp.component, [], baseTextNode('clic me'))
+      const _root = root.value
+      _root.children = _root.children ? [..._root.children, _n] : [_n]
+      console.log(_root)
+    }
+
+    pushNewNode(root.value)
+
     
     return {
       cmpSize,
       style,
-      moveBlockUpdate
-      // Root,
+      moveBlockUpdate,
+      root,
+
+      onSelect
     }
   }
 })
