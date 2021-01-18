@@ -3,7 +3,6 @@ import {
   MixVProp,
   BaseProp,
   isVDynamiceProp,
-  BaseNativeProp
 } from '@love-code/complie'
 
 import {

@@ -107,6 +107,13 @@ export default defineComponent({
       const _root = root.value
       _root.children = _root.children ? [..._root.children, _n] : [_n]
       console.log(_root)
+      setTimeout(() => {
+        console.log('change')
+        _n.props = [
+          baseNativeProp('type', 'primary')
+        ]
+        console.log('change', _n)
+      }, 1000);
     }
 
     pushNewNode(root.value)
