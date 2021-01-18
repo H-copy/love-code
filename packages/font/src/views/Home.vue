@@ -50,8 +50,14 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed, ref } from 'vue'
+import {
+  defineComponent,
+  computed,
+  ref,
+  watch
+} from 'vue'
 import { useStore } from 'vuex'
+import prettify from 'html-prettify'
 import {
   Node,
   baseTagNode,
@@ -108,15 +114,17 @@ export default defineComponent({
       _root.children = _root.children ? [..._root.children, _n] : [_n]
       console.log(_root)
       setTimeout(() => {
-        console.log('change')
         _n.props = [
           baseNativeProp('type', 'primary')
         ]
-        console.log('change', _n)
       }, 1000);
     }
 
     pushNewNode(root.value)
+
+    watch(root, () => {
+      console.log(prettify(root.value.stringify()))
+    }, { deep: true })
 
     
     return {
