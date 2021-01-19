@@ -1,46 +1,83 @@
 import {
-  VTextNode,
-  MixVProp,
-  BaseProp,
-  isVDynamiceProp,
-} from '@love-code/complie'
-
-import {
+  computed,
   defineComponent,
-  reactive
+  PropType,
+  ref,
+  Ref
 } from 'vue'
 
-function getJsxProp(p: MixVProp[], globalCtx: any, localCtx: any) {
-  const props: any = {}
-  for (let i = 0; i < p.length; i += 1) {
-    const current = p[i]
-    if (current instanceof BaseProp) {
-      props[current.name] = current.value
+import {
+  Tag,
+  isNativeTag,
+  isDynamicTag,
+  isSlefTag,
+  isTextTag,
+
+  isNativeProp,
+  isSlefProp,
+  isEventProp
+} from '@love-code/compile'
+
+import * as assert from '../../utils/assert'
+
+function render(node: Tag, globalCtx: Ref<any>){
+  const Cmp = computed(() => {
+    return node.tag
+  })
+
+  const _props = computed(() => {
+    if (!node.props){
+      return {}
     }
-    if (isVDynamiceProp(current)) {
-      props[current.name] = globalCtx[current.value as string]
-    }
+    return node.props.reduce((acc: any, next: any) => {
+      if (isNativeProp(next) || isSlefProp(next)){
+        return { ...acc, [next.name]: next.value }
+      }
+
+      if (isEventProp(next)){
+        const { directive, value } = next
+        const eventName = directive.arg
+        const _p = assert.isString(next.value) ? globalCtx.value[next.value] : value
+        return { ...acc, [eventName]: _p }
+      }
+      
+      return { ...acc, next }
+    }, {})
+  })
+
+  if (isTextTag(node)){
+    return Cmp.value
   }
 
-  return props
-}
-
-function render(n: any, globalCtx: any, localCtx: any = {}) {
-  const _localCtx = reactive({ ...localCtx })
-  const Cmp = n.component || n.tag
-  const children = n.children ? n.children.map((child: any) => render(child, globalCtx)) : []
-  const props = n.props ? getJsxProp(n.props, globalCtx, _localCtx) : {}
-  if (n.type === '__TEXT') {
-    return <> {n instanceof VTextNode ? globalCtx[n.tag] : n.tag} </>
+  if (isSlefTag(node)){
+    return <Cmp.value {..._props} />
   }
-
-  return <Cmp {...props}> {children} </Cmp>
+  
+  const _children = computed<Tag[]>(() => {
+    const _c: Tag[] = (node as Tag).children || []
+    return _c.map((child: Tag) => render(child, globalCtx))
+  })
+  return <Cmp.value {..._props.value}> { _children.value } </Cmp.value>
 }
 
-export default defineComponent({
-  props: ['root'],
+const Tag = defineComponent({
+  name: 'tag',
+  props: {
+    node: {
+      type: Object as PropType<Tag>,
+      required: true
+    },
+    globalCtx: {
+      type: Object,
+      required: true
+    },
+  },
   setup(props) {
-    const globalCtx = reactive({})
-    return () => render(props.root, globalCtx)
+    const globalCtx = ref({
+      submit: () => console.log('submit')
+    })
+    return () => render(props.node, globalCtx)
   }
 })
+
+export default Tag

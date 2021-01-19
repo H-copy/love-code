@@ -1,0 +1,1 @@
+import * as compile from '@love-code/compile'

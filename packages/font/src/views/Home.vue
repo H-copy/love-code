@@ -31,13 +31,12 @@
 </style>
 <template>
   <div class="love-code">
-   
     <div class='lc-left'>
       <CmpPanel @select='onSelect' />
     </div>
     <div class='lc-content'>
       <BabySitter>
-        <Render :root='root' />
+        <Render v-if='root' :node='root' :globalCtx='globalCtx' :localCtx='localCtx' />
         <Dragable :data="cmpSize" @update='moveBlockUpdate'>
           <div class='box' :style='style'></div>
         </Dragable>
@@ -57,20 +56,16 @@ import {
   watch
 } from 'vue'
 import { useStore } from 'vuex'
+import * as compile from '@love-code/compile'
 import prettify from 'html-prettify'
-import {
-  Node,
-  baseTagNode,
-  baseTextNode,
-  baseNativeProp,
-  vTagNode
-} from '@love-code/complie'
+import { Button } from 'ant-design-vue'
 import { MoveBlock, Dragable } from '../components/dragable'
 import { BabySitter } from '../components/baby-sitter'
 import CmpPanel from './cmp-panel.vue'
 import { Cmp } from '../types'
 import PropPanel from './prop-panel.vue'
 import { Render } from '../components/render'
+
 
 export default defineComponent({
   components: {
@@ -81,14 +76,6 @@ export default defineComponent({
     Render
   },
   setup() {
-    const store = useStore()
-    const pushNewNode = (n: Node) => {
-      store.commit('pushNewNode', n)
-    }
-    
-    const root = ref<Node>(baseTagNode('div', [
-      baseNativeProp('style', 'color:#fff')
-    ], baseTextNode('show me')))
     const cmpSize = ref({
       width: 200,
       height: 200
@@ -107,33 +94,50 @@ export default defineComponent({
         height: d.height
       }
     }
-
-    const onSelect = (d: {key: string, cmp: Cmp}) => {
-      const _n = vTagNode(d.cmp.component, [], baseTextNode('clic me'))
-      const _root = root.value
-      _root.children = _root.children ? [..._root.children, _n] : [_n]
-      console.log(_root)
-      setTimeout(() => {
-        _n.props = [
-          baseNativeProp('type', 'primary')
-        ]
-      }, 1000);
-    }
-
-    pushNewNode(root.value)
-
-    watch(root, () => {
-      console.log(prettify(root.value.stringify()))
-    }, { deep: true })
-
     
+    const globalCtx = ref({})
+    const localCtx = ref({})
+    
+    const root = ref<compile.Tag>(
+      compile.nativeTag(
+        'div',
+        compile.nativeProp('style', 'color: orange'),
+        [
+          
+          compile.nativeTag(
+            Dragable,
+            [],
+            'show me',
+          ),
+
+          compile.nativeTag(
+            Dragable,
+            [],
+            [
+              compile.nativeTag(
+                Button,
+                [
+                  compile.vEventProp('onClick', 'submit'),
+                  compile.nativeProp('type', 'primary')
+                ],
+                'click me'
+              )
+            ]
+          ),
+
+         
+        ]
+      )
+    )
+
     return {
       cmpSize,
       style,
       moveBlockUpdate,
-      root,
 
-      onSelect
+      root,
+      globalCtx,
+      localCtx
     }
   }
 })

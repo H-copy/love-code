@@ -1,18 +1,18 @@
 import { createStore } from 'vuex'
-import { Node } from '@love-code/complie'
+import { Tag } from '@love-code/compile'
 import components, { MODULE_NAME } from './components'
 import { Cmp } from '../types'
 
 export default createStore({
   state: {
     newCmp: {} as Cmp,
-    nodes: [] as Node[]
+    nodes: [] as Tag[]
   },
   mutations: {
     readCmp(state, cmp: Cmp){
       state.newCmp = cmp
     },
-    pushNewNode(state, node: Node){
+    pushNewTag(state, node: Tag){
       state.nodes.push(node)
     }
   },

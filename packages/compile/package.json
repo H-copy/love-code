@@ -1,13 +1,17 @@
 {
-  "name": "@love-code/complie",
+  "name": "@love-code/compile",
   "version": "0.1.0",
-  "description": "self node complie",
+  "description": "",
   "main": "lib/index.js",
   "module": "lib/index.esm.js",
+  "typings": "lib/index.d.ts",
   "scripts": {
-    "dev": "set NODE_ENV=developemnt&& rollup -c rollup.config.js -w",
-    "build": "rm -fr lib && set NODE_ENV=production&& rollup -c rollup.config.js",
-    "test": "jest __test__"
+    "dev:rollup": "set NODE_ENV=developemnt&& rollup -c rollup.config.js -w",
+    "build:rollup": "rm -fr lib && set NODE_ENV=production&& rollup -c rollup.config.js",
+    "dev": "gulp --color --gulpfile ./scripts/dev.js",
+    "build": "gulp -cwd ./ --color --gulpfile ./scripts/build.js",
+    "test": "jest __test__",
+    "concat:types": "api-extractor run"
   },
   "keywords": [
     "love-code"
@@ -19,6 +23,7 @@
   "author": "copy-left",
   "license": "ISC",
   "devDependencies": {
+    "@microsoft/api-extractor": "^7.13.0",
     "@rollup/plugin-commonjs": "^17.0.0",
     "@rollup/plugin-json": "^4.1.0",
     "@rollup/plugin-node-resolve": "^11.0.1",
