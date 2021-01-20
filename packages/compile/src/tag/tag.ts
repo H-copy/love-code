@@ -15,7 +15,7 @@ export interface Tag {
   isTag: '__TAG'
   tag: any
   type: TagType
-  Props?: Prop[]
+  props?: Prop[]
   children?: Tag[]
   parent?: Tag[]
   [s:string]: any
