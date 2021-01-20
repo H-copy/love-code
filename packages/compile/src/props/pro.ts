@@ -62,7 +62,7 @@ export function vModelProp(model: any, value?: any):VDirectiveProp {
    // 匹配参数模式 v-model='value'
    if (!value && model) {
     value = model
-    model = {}
+    model = { arg: 'modelValue' }
    } else if (assert.isString(model)) {
     model = { arg: model }
   }

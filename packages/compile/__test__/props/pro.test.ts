@@ -205,6 +205,23 @@ describe('prop vprop', () => {
     })
   })
 
+  test('vModelProp directive', () => {
+    const directive = {
+      arg: 'click',
+      modifiers: ['stop']
+    }
+    const p = vModelProp(directive, 'list')
+    expect(p).toMatchObject({
+      type: VPropType.MODEL,
+      name: 'v-model:click.stop',
+      value: 'list',
+      directive: {
+        name: 'v-model',
+        ...directive
+      }
+    })
+  })
+
   test('vSlotProp not argments', () => {
     expect(vSlotProp()).toMatchObject({
       type: VPropType.SLOT,
@@ -271,5 +288,5 @@ describe('prop vprop', () => {
       }
     })
   })
-  
+
 })
