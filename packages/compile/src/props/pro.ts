@@ -62,9 +62,16 @@ export function vModelProp(model: any, value?: any):VDirectiveProp {
    // 匹配参数模式 v-model='value'
    if (!value && model) {
     value = model
-    model = ''
+    model = {}
+   } else if (assert.isString(model)) {
+    model = { arg: model }
   }
-  const _directive = { name: 'v-model', arg: model }
+  
+  if (!assert.isObject(model)) {
+    throw new Error(`v-model 属性设置错误 ${model} ${value}`)
+  }
+  
+  const _directive = { name: 'v-model', ...model }
   return vDirective(VPropType.MODEL, _directive, value)
 }
 
@@ -86,7 +93,7 @@ export function vRefProp(value: string | ((...args: any) => any)): VDirectivePro
 }
 
 
-export function mixDefaultForValue(v:VForValue | VForValueDynamice) {
+export function mixDefaultForValue(v: VForValue | VForValueDynamice) {
   return {...DEFAULT_FOR_VALUE, ...v}
 }
 
