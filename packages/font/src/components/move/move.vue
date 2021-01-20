@@ -1,12 +1,12 @@
 <style lang='stylus' scoped>
 $color = orange
-.dragable{
+.move{
   position absolute
   border 1px dashed transparent
   $pointSize=10px
   &:hover{
     border-color $color
-    .dragable-point{
+    .move-point{
       opacity 1
     }
   }
@@ -77,10 +77,10 @@ $color = orange
 }
 </style>
 <template>
-  <div class='dragable' :style='moveBlockStyle' @mousedown.stop='onMouseDown' >
+  <div class='move' :style='moveBlockStyle' @mousedown.stop='onMouseDown' >
     <slot></slot>
       <div
-      class='dragable-point'
+      class='move-point'
       v-for='type of movePoints'
       @mousedown.stop='e => onPointMousedown(e, moveBlock, type)'
       :class='type'

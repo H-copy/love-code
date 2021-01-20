@@ -14,7 +14,7 @@ export default {
         component: Button,
         name: 'a-button',
         img: 'https://hbimg.huabanimg.com/f79521d397561c75faa4728e8e52e355d15a0ee96a18-3EAN48_fw658/format/webp',
-        props: {}
+        props: {},
       },
       input: {
         component: Input,

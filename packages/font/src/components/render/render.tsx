@@ -7,6 +7,8 @@ import {
   Ref
 } from 'vue'
 
+import { useStore } from 'vuex'
+
 import {
   Tag,
   isDynamicTag,
@@ -136,7 +138,9 @@ const Tag = defineComponent({
     },
   },
   setup(props) {
+    const store = useStore()
     const globalCtx = ref({ ...props.globalCtx })
+    store.commit('resetGlobalCtx', globalCtx)
     return () => {
       try {
         return render(props.node, globalCtx)

@@ -28,6 +28,22 @@
   }
 }
 
+.drag{
+  &-area{
+    $size = 600px
+    margin: 10px;
+    width $size
+    height $size
+    background #eee
+  }
+  &-move{
+   $size = 40px
+   width $size
+   height $size
+   background orange
+  }
+}
+
 </style>
 <template>
   <div class="love-code">
@@ -37,10 +53,14 @@
     <div class='lc-content'>
       <BabySitter>
         <Render v-if='root' :node='root' :globalCtx='globalCtx' :localCtx='localCtx' />
-        <Dragable :data="cmpSize" @update='moveBlockUpdate'>
+        <Move :data="cmpSize" @update='moveBlockUpdate'>
           <div class='box' :style='style'></div>
-        </Dragable>
+        </Move>
       </BabySitter>
+      
+      <div class='drag-area' draggable v-bind='dragEvents'></div>
+      <div class='drag-move' ref='moveBlock' ></div>
+      
     </div>
     <div class='lc-right'>
       <PropPanel />
@@ -53,27 +73,29 @@ import {
   defineComponent,
   computed,
   ref,
-  watch
+  watch,
+  onMounted
 } from 'vue'
 import { useStore } from 'vuex'
 import * as compile from '@love-code/compile'
 import prettify from 'html-prettify'
-import { Button } from 'ant-design-vue'
-import { MoveBlock, Dragable } from '../components/dragable'
+import { Button, Input } from 'ant-design-vue'
+import { MoveBlock, Move } from '../components/move'
 import { BabySitter } from '../components/baby-sitter'
 import CmpPanel from './cmp-panel.vue'
 import { Cmp } from '../types'
 import PropPanel from './prop-panel.vue'
 import { Render } from '../components/render'
+import { useDragArea, useDrag } from '../hooks'
 
 
 export default defineComponent({
   components: {
     CmpPanel,
     PropPanel,
-    Dragable,
+    Move,
     BabySitter,
-    Render
+    Render,
   },
   setup() {
     const cmpSize = ref({
@@ -97,39 +119,42 @@ export default defineComponent({
     
     const globalCtx = ref({})
     const localCtx = ref({})
-    
+             
     const root = ref<compile.Tag>(
-      compile.nativeTag(
-        'div',
-        compile.nativeProp('style', 'color: orange'),
-        [
-          
-          compile.nativeTag(
-            Dragable,
-            [],
-            'show me',
-          ),
-
-          compile.nativeTag(
-            Dragable,
-            [],
-            [
-              compile.nativeTag(
-                Button,
-                [
-                  compile.vEventProp('onClick', 'submit'),
-                  compile.nativeProp('type', 'primary')
-                ],
-                'click me'
-              )
-            ]
-          ),
-
-         
-        ]
-      )
+      // compile.nativeTag(
+      //   'div',
+      //   compile.nativeProp('style', 'color: orange'),
+      //   [
+      //     compile.nativeTag(
+      //       Dragable,
+      //       [
+      //         compile.vIfProp('visibal')
+      //       ],
+      //       'show me',
+      //     ),
+      //     compile.nativeTag(
+      //       Button,
+      //       [],
+      //       compile.dynamiceTag('buttonText')
+      //     )
+      //   ]
+      // )
     )
 
+    const onDrga = {
+      onDom(d: string){
+        console.log('dom drag data', d)
+      }
+    }
+
+    const moveBlock = ref<HTMLElement>()
+    const { dragEvents } = useDragArea(onDrga)
+    const { bindEle } = useDrag()
+    
+    onMounted(() => {
+      bindEle({ id: '111' })(moveBlock.value as HTMLElement)
+    })
+  
     return {
       cmpSize,
       style,
@@ -137,7 +162,10 @@ export default defineComponent({
 
       root,
       globalCtx,
-      localCtx
+      localCtx,
+
+      dragEvents,
+      moveBlock
     }
   }
 })
