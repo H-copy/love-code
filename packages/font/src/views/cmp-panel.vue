@@ -1,10 +1,13 @@
 <template>
   <div class='cmp-panel'>
     
-    <div @mousedown='onSelect(key, item)' v-for='(item, key) of cmpList' :key='key'>
-      <a-button block>
+    <div 
+      draggable='true'
+      @mousedown='onSelect(key, item)' 
+      v-for='(item, key) of cmpList' 
+      @dragstart='e => bindDragstart({ id: null, key })(e)'
+      :key='key'>
         {{ item.name }}
-      </a-button>
     </div>
   </div>
 </template>
@@ -12,6 +15,7 @@
 import { defineComponent, computed } from 'vue'
 import { useStore } from 'vuex'
 import { Cmp } from '../types'
+import { useDrag } from '../hooks'
 
 export default defineComponent({
   setup(__, ctx){
@@ -22,10 +26,13 @@ export default defineComponent({
     const onSelect = (key: string, cmp: Cmp) => {
       ctx.emit('select', { key, cmp })
     }
+
+    const { bindDragstart } = useDrag()
     
     return {
       cmpList,
-      onSelect
+      onSelect,
+      bindDragstart
     }
   }
 })

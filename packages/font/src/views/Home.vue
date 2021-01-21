@@ -50,17 +50,14 @@
     <div class='lc-left'>
       <CmpPanel @select='onSelect' />
     </div>
-    <div class='lc-content'>
+    <div class='lc-content' v-on='dragEvents'>
       <BabySitter>
         <Render v-if='root' :node='root' :globalCtx='globalCtx' :localCtx='localCtx' />
         <Move :data="cmpSize" @update='moveBlockUpdate'>
           <div class='box' :style='style'></div>
         </Move>
       </BabySitter>
-      
-      <div class='drag-area' draggable v-bind='dragEvents'></div>
-      <div class='drag-move' ref='moveBlock' ></div>
-      
+
     </div>
     <div class='lc-right'>
       <PropPanel />
@@ -86,7 +83,7 @@ import CmpPanel from './cmp-panel.vue'
 import { Cmp } from '../types'
 import PropPanel from './prop-panel.vue'
 import { Render } from '../components/render'
-import { useDragArea, useDrag } from '../hooks'
+import { useDragArea } from '../hooks'
 
 
 export default defineComponent({
@@ -121,40 +118,31 @@ export default defineComponent({
     const localCtx = ref({})
              
     const root = ref<compile.Tag>(
-      // compile.nativeTag(
-      //   'div',
-      //   compile.nativeProp('style', 'color: orange'),
-      //   [
-      //     compile.nativeTag(
-      //       Dragable,
-      //       [
-      //         compile.vIfProp('visibal')
-      //       ],
-      //       'show me',
-      //     ),
-      //     compile.nativeTag(
-      //       Button,
-      //       [],
-      //       compile.dynamiceTag('buttonText')
-      //     )
-      //   ]
-      // )
+      compile.nativeTag(
+        'div',
+        compile.nativeProp('style', 'color: orange')
+      )
     )
 
-    const onDrga = {
-      onDom(d: string){
+    const store = useStore()
+
+    const onDrag = {
+      onDom(d: any){
+        if (!d.id){
+          const _c = store.state.s_components.cmpList[d.key]
+          const _n = compile.nativeTag(
+            _c.component,
+          )
+          root.value.children = root.value.children ? [
+            ...root.value.children,
+            _n
+          ] : [_n]
+        }
         console.log('dom drag data', d)
       }
     }
+    const { dragEvents } = useDragArea(onDrag)
 
-    const moveBlock = ref<HTMLElement>()
-    const { dragEvents } = useDragArea(onDrga)
-    const { bindEle } = useDrag()
-    
-    onMounted(() => {
-      bindEle({ id: '111' })(moveBlock.value as HTMLElement)
-    })
-  
     return {
       cmpSize,
       style,
@@ -165,7 +153,6 @@ export default defineComponent({
       localCtx,
 
       dragEvents,
-      moveBlock
     }
   }
 })

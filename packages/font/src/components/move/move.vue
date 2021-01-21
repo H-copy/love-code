@@ -129,7 +129,6 @@ export default defineComponent({
       unit.value = props.unit
     }, { immediate: true })
     
-    console.log(props.data)
     updateBlock(props.data)
     
     return {

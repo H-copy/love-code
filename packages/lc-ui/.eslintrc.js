@@ -7,7 +7,6 @@ module.exports = {
     'plugin:vue/vue3-essential',
     'eslint:recommended',
     '@vue/typescript/recommended',
-    "@micro/eslint-config-vext"
     // '@vue/prettier',
     // '@vue/prettier/@typescript-eslint',
   ],

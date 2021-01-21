@@ -1,9 +1,6 @@
-import { ColSize } from 'ant-design-vue/lib/grid/Col'
 import {
   ref,
-  watch,
 } from 'vue'
-
 import { useBool } from './useBool'
 
 export interface AnyFunction {
@@ -17,13 +14,6 @@ export function getDragDataSign() {
   return DATA_SIGN
 }
 
-export function domDragCallback() {
-  return (data: any) => (e: DragEvent) => {
-    /* eslint-disable-next-line no-unused-expressions */
-    e.dataTransfer?.setData(DATA_SIGN, JSON.stringify(data))
-  }
-}
-
 /**
  * DOM 绑定拖拽事件
  * @returns { { elems, handlers, bindEle } } 
@@ -32,47 +22,16 @@ export function domDragCallback() {
  * - bindEle any => element => void 接收事件传参，返回dom元素收集器
  * @example
  * const { bindEle } = useDrag()
- * bindEle(document.querySelector('#move-box'), fin)
+ * const element = document.querySelector('.move-block')
+ * element.onDragstart = bindDragstart({id: 1})
  */
 export function useDrag(dataSign = DATA_SIGN) {
-  // 元素列表
-  const elems = ref<HTMLElement[]>([])
-  // 数据绑定函数
-  const handlers = ref<AnyFunction[]>([])
-
-  watch(elems, (val, oldVal) => {
-    console.log('>>>>>', val, oldVal)
-    if (oldVal) {
-      oldVal.forEach((ele: HTMLElement, index: number) => {
-        ele.removeEventListener('onDragstart', handlers.value[index])
-        handlers.value.splice(index, 1)
-        elems.value.splice(index, 1)
-      })
-    }
-
-    console.log('val', val)
-    
-    if (val) {
-      val.forEach((ele: HTMLElement, index: number) => {
-        console.log('ele', ele.setAttribute)
-        ele.setAttribute('draggable', 'true')
-        ele.addEventListener('dragstart', handlers.value[index])
-      })
-    }
-  })
-
-  // 生成数据绑定函数 
-  const bindEle = <T>(data: T) => (ele?: HTMLElement) => {
-    if (!ele) { return }
-    handlers.value = [...handlers.value, (e: DragEvent) => {
-      /* eslint-disable-next-line no-unused-expressions */
-      e.dataTransfer?.setData(dataSign, JSON.stringify(data))
-    }]
-    
-    elems.value = [...elems.value, ele]
+  const bindDragstart = <T>(data: T) => (e: DragEvent) => {
+    /* eslint-disable-next-line no-unused-expressions */
+    e.dataTransfer?.setData(dataSign, JSON.stringify(data))
   }
 
-  return { elems, handlers, bindEle }
+  return { bindDragstart }
 }
 
 export interface DragEvents {
@@ -102,23 +61,40 @@ function hasAndRun(fn?: (...args: any) => any, ...args: any[]) {
 }
 
 /**
- * 拖拽区hook
- * @param { Object } options 
+ * 拖拽区 hook
+ * @param { Object } options 拖拽响应回调, 用于处理不同类型数据
  * - onDom dom拖拽释放回调
  * - onUri uri拖拽释放回调
  * - onFiles file拖拽释放回调
  * - onText text拖拽释放回调
  * 
- * @returns { array  }
+ * @param { Object } events 自定义拖拽事件
+ * 
+ * @param { string } dataSign 拖拽取值标识
+ * 
+ * @returns { array  } 
  * - props 拖拽监听函数
  * - isHovering 是否进入监听区
+ * 
+ * @example
+ * --- js
+ * const dropType = {
+ *   onDom(data){
+ *    console.log()
+ *   }
+ * }
+ * const { dragEvents } = useDragArea(dropType)
+ * 
+ * --- html
+ * <div class='area' v-on='dragEvents'>
+ * </div>
  */
 export function useDragArea(
-  drag = {} as DragCallbackType,
+  dropType = {} as DragCallbackType,
   events = {} as DragEvents,
   dataSign = DATA_SIGN
 ) {
-  const optionsRef = ref(drag)
+  const optionsRef = ref(dropType)
   const { state: isHovering, setTrue: startHover, setFalse: endHover } = useBool()
   const { state: isRun, setTrue: startRun, setFalse: endRun } = useBool()
 
@@ -127,7 +103,7 @@ export function useDragArea(
       return
     }
 
-    const url = dataTransfer.getData('text/uri-list')
+    const url = dataTransfer.getData(dataSign)
     const dom = dataTransfer.getData(dataSign)
 
     const {
@@ -174,7 +150,7 @@ export function useDragArea(
   } = events
 
   const dragEvents = {
-    dragover: (e: DragEvent) => { hasAndRun(dragover, e) },
+    dragover: (e: DragEvent) => { e.preventDefault(); hasAndRun(dragover, e) },
     dragenter: (e: DragEvent) => { e.preventDefault(); startHover(); hasAndRun(dragenter, e) },
     dragleave: (e: DragEvent) => { endHover(); hasAndRun(dragleave, e) },
     dragstart: (e: DragEvent) => { e.preventDefault(); startRun(); hasAndRun(dragstart, e) },
