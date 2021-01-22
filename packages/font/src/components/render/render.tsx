@@ -28,8 +28,11 @@ import {
 
 import * as assert from '../../utils/assert'
 import { firstUpperCase } from '../../utils'
+import { BabySitter } from '../baby-sitter'
+import { TTag } from '../../creator'
 
-function render(node: Tag, globalCtx: Ref<any>){
+
+function render(node: TTag, globalCtx: Ref<any>){
   const Cmp = computed(() => {
     return node.tag
   })
@@ -58,7 +61,7 @@ function render(node: Tag, globalCtx: Ref<any>){
       if (isDynamicProp(next)){
         const { directive, value } = next
         const propName = directive.arg
-        const _p = assert.isString(propName) ? globalCtx.value[propName] : value
+        const _p = assert.isString(value) ? (globalCtx.value[value] || value) : value
         return { ...acc, [propName]: _p }
       }      
 
@@ -102,34 +105,40 @@ function render(node: Tag, globalCtx: Ref<any>){
   })
 
   if (isTextTag(node)){
-    return Cmp.value
+    return <BabySitter id={ node.id }> { Cmp.value } </BabySitter> 
   }
 
   if (isSlefTag(node)){
-    return <Cmp.value {..._props} />
+    return <BabySitter id={ node.id }>
+            <Cmp.value {..._props} />
+           </BabySitter>
   }
 
   if (isDynamicTag(node)){
-    return globalCtx.value[node.tag]
+    return <BabySitter id={ node.id }> 
+            { globalCtx.value[node.tag] }
+          </BabySitter>
   }
 
-  const _children = computed<Tag[]>(() => {
-    const _c: Tag[] = (node as Tag).children || []
-    return _c.map((child: Tag) => render(child, globalCtx))
+  const _children = computed(() => {
+    const _c: TTag[] = (node as TTag).children || []
+    return _c.map((child: TTag) => render(child, globalCtx))
   })
 
   if (_props.value.IF === false){
     return null
   }
   
-  return <Cmp.value { ..._props.value }> { _children.value } </Cmp.value>
+  return <BabySitter id={ node.id }> 
+          <Cmp.value { ..._props.value }> { _children.value } </Cmp.value>
+        </BabySitter>
 }
 
-const Tag = defineComponent({
+const tag = defineComponent({
   name: 'tag',
   props: {
     node: {
-      type: Object as PropType<Tag>,
+      type: Object as PropType<TTag>,
       required: true
     },
     globalCtx: {
@@ -152,4 +161,4 @@ const Tag = defineComponent({
   }
 })
 
-export default Tag
+export default tag

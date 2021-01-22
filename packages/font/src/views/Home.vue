@@ -7,7 +7,7 @@
   display grid
   grid-template-columns 200px auto 200px
   grid-template-rows 100%
-  background #171A21
+  // background #171A21
 }
 .box{
   box-size border-box
@@ -25,6 +25,7 @@
   }
   &-content{
     position relative
+    padding 40px;
   }
 }
 
@@ -51,12 +52,13 @@
       <CmpPanel @select='onSelect' />
     </div>
     <div class='lc-content' v-on='dragEvents'>
-      <BabySitter>
-        <Render v-if='root' :node='root' :globalCtx='globalCtx' :localCtx='localCtx' />
+      <Render v-if='root' :node='root' :globalCtx='globalCtx' :localCtx='localCtx' />
+
+      <!-- <BabySitter>
         <Move :data="cmpSize" @update='moveBlockUpdate'>
           <div class='box' :style='style'></div>
         </Move>
-      </BabySitter>
+      </BabySitter> -->
 
     </div>
     <div class='lc-right'>
@@ -77,76 +79,88 @@ import { useStore } from 'vuex'
 import * as compile from '@love-code/compile'
 import prettify from 'html-prettify'
 import { Button, Input } from 'ant-design-vue'
-import { MoveBlock, Move } from '../components/move'
-import { BabySitter } from '../components/baby-sitter'
+// import { MoveBlock, Move } from '../components/move'
+// import { BabySitter } from '../components/baby-sitter'
 import CmpPanel from './cmp-panel.vue'
-import { Cmp } from '../types'
 import PropPanel from './prop-panel.vue'
 import { Render } from '../components/render'
 import { useDragArea } from '../hooks'
+import * as creator from '../creator'
 
 
 export default defineComponent({
   components: {
     CmpPanel,
     PropPanel,
-    Move,
-    BabySitter,
+    // Move,
+    // BabySitter,
     Render,
   },
   setup() {
-    const cmpSize = ref({
-      width: 200,
-      height: 200
-    })
-    const style = computed(() => {
-      const { width, height } = cmpSize.value
-      return {
-        width: `${width}px`,
-        height: `${height}px`
-      }
-    })
-  
-    const moveBlockUpdate = (d: MoveBlock) => {
-      cmpSize.value = {
-        width: d.width,
-        height: d.height
-      }
-    }
-    
+    // const cmpSize = ref({
+    //   width: 200,
+    //   height: 200
+    // })
+    // const style = computed(() => {
+    //   const { width, height } = cmpSize.value
+    //   return {
+    //     width: `${width}px`,
+    //     height: `${height}px`
+    //   }
+    // })
+
+    // const moveBlockUpdate = (d: MoveBlock) => {
+    //   cmpSize.value = {
+    //     width: d.width,
+    //     height: d.height
+    //   }
+    // }
+
     const globalCtx = ref({})
     const localCtx = ref({})
-             
-    const root = ref<compile.Tag>(
-      compile.nativeTag(
-        'div',
-        compile.nativeProp('style', 'color: orange')
-      )
+    const store = useStore()
+
+    const root = ref(
+      creator.tagCreator({
+        component: 'div',
+        name: 'div',
+        type: 'nativeTag',
+        props: [
+          {
+            type: 'vDynamiceProp',
+            name: 'style',
+            value: {
+              margin: 'auto',
+              width: '800px',
+              height: '800px',
+              background: '#eee'
+            }
+          }
+        ]
+      })
     )
 
-    const store = useStore()
+    store.commit('pushNewTag', root.value)
 
     const onDrag = {
       onDom(d: any){
         if (!d.id){
-          const _c = store.state.s_components.cmpList[d.key]
-          const _n = compile.nativeTag(
-            _c.component,
-          )
+          const _c = store.state.s_components.cmpList[d.key]()
+          const _n = creator.tagCreator(_c, root.value.id)
+          store.commit('pushNewTag', _n)
           root.value.children = root.value.children ? [
             ...root.value.children,
             _n
           ] : [_n]
         }
-        console.log('dom drag data', d)
       }
     }
     const { dragEvents } = useDragArea(onDrag)
 
     return {
-      cmpSize,
-      style,
-      moveBlockUpdate,
+      // cmpSize,
+      // style,
+      // moveBlockUpdate,
 
       root,
       globalCtx,

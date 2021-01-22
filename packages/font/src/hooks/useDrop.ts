@@ -150,16 +150,44 @@ export function useDragArea(
   } = events
 
   const dragEvents = {
-    dragover: (e: DragEvent) => { e.preventDefault(); hasAndRun(dragover, e) },
-    dragenter: (e: DragEvent) => { e.preventDefault(); startHover(); hasAndRun(dragenter, e) },
-    dragleave: (e: DragEvent) => { endHover(); hasAndRun(dragleave, e) },
-    dragstart: (e: DragEvent) => { e.preventDefault(); startRun(); hasAndRun(dragstart, e) },
-    dragend: (e: DragEvent) => { e.preventDefault(); endRun(); hasAndRun(dragend, e) },
-    paste: (e: DragEvent) => { callback(e.dataTransfer, e); hasAndRun(paste, e) },
+    dragover: (e: DragEvent) => {
+      e.preventDefault()
+      e.stopPropagation()
+      hasAndRun(dragover, e)
+    },
+    dragenter: (e: DragEvent) => { 
+      e.preventDefault()
+      e.stopPropagation()
+      startHover()
+      hasAndRun(dragenter, e)
+    },
+    dragleave: (e: DragEvent) => { 
+      e.preventDefault()
+      e.stopPropagation()
+      endHover()
+      hasAndRun(dragleave, e)
+    },
+    dragstart: (e: DragEvent) => { 
+      e.preventDefault()
+      e.stopPropagation()
+      startRun()
+      hasAndRun(dragstart, e)
+    },
+    dragend: (e: DragEvent) => { 
+      e.preventDefault()
+      e.stopPropagation()
+      endRun()
+      hasAndRun(dragend, e)
+    },
+    paste: (e: DragEvent) => {
+      callback(e.dataTransfer, e)
+      hasAndRun(paste, e)
+    },
     drop: (e: DragEvent) => {
-      e.preventDefault();
-      endHover();
-      callback(e.dataTransfer, e);
+      e.preventDefault()
+      e.stopPropagation()
+      endHover()
+      callback(e.dataTransfer, e)
       hasAndRun(drop, e)
     }
   }

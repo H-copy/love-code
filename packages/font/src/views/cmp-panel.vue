@@ -14,8 +14,8 @@
 <script lang='ts'>
 import { defineComponent, computed } from 'vue'
 import { useStore } from 'vuex'
-import { Cmp } from '../types'
 import { useDrag } from '../hooks'
+import { CmpMod } from '../creator'
 
 export default defineComponent({
   setup(__, ctx){
@@ -23,8 +23,8 @@ export default defineComponent({
     const cmpList = computed(() => {
       return store.state.s_components.cmpList
     })
-    const onSelect = (key: string, cmp: Cmp) => {
-      ctx.emit('select', { key, cmp })
+    const onSelect = (key: string, mod: CmpMod) => {
+      ctx.emit('select', { key, mod })
     }
 
     const { bindDragstart } = useDrag()
