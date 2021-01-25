@@ -40,7 +40,7 @@ function render(node: TTag, globalCtx: Ref<any>){
     if (!node.props){
       return {}
     }
-    return node.props.reduce((acc: any, next: any) => {
+    return Object.values(node.props).reduce((acc: any, next: any) => {
       // baseType
       if (isNativeProp(next) || isSlefProp(next)){
         return { ...acc, [next.name]: next.value }

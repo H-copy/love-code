@@ -13,7 +13,6 @@ export default createStore({
     active: null as TTag | null
   },
   mutations: {
-    
     pushNewTag(state, node: TTag){
       state.nodes[node.id] = node
     },

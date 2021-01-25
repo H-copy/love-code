@@ -6,16 +6,41 @@ import {
 export default {
   state: () => ({
     propsList: {
-      div: {
-        style: {
-          title: 'style',
+      // div: {
+      //   style: {
+      //     title: 'style',
+      //     props: {
+      //       background: {
+      //         component: PInput,
+      //         label: 'style.backgound',
+      //         key: 'v-bind:type',
+      //         default: '',
+      //         options: {}
+      //       }
+      //     }
+      //   }
+      // },
+      'a-card': {
+        base: {
+          title: 'base',
           props: {
-            background: {
+            title: {
               component: PInput,
-              label: 'style.backgound',
-              key: 'v-bind:type',
-              default: '',
-              options: {}
+              name: 'title',
+              createType: 'nativeProp',
+              default: 'card title'
+            },
+            size: {
+              component: PInput,
+              name: 'size',
+              createType: 'nativeProp',
+              default: 'default'
+            },
+            type: {
+              component: PInput,
+              name: 'type',
+              createType: 'nativeProp',
+              default: ''
             }
           }
         }
@@ -26,10 +51,11 @@ export default {
           props: {
             type: {
               component: PInput,
-              label: 'type',
-              key: 'type',
+              name: 'type',
+              createType: 'nativeProp',
+              label: 'button type',
               default: 'primary'
-            }
+            },
           }
         }
       }

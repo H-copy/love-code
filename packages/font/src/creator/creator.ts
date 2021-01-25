@@ -31,7 +31,7 @@ const propFn = {
   isDynamicFor: compile.isDynamicFor,
 }
 
-type PropCreate = keyof typeof propFn
+export type PropCreate = keyof typeof propFn
 
 export interface PropMod{
   type: PropCreate,

@@ -1,9 +1,13 @@
+import {
+  PropCreate
+} from '../creator'
+
 export interface Prop{
   component: any,
-  key: string,
+  name: string,
+  createType: PropCreate
   label?: string,
-  default?: any,
-  options?: any
+  options?: any,
 }
 
 export interface PropGroupItem{
