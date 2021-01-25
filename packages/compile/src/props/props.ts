@@ -24,6 +24,10 @@ export enum VPropType {
   DYNAMIC = '__DYNAMIC',
 }
 
+export interface Props{
+  [k: string]: Prop
+}
+
 
 /**
  * 指令参数配置

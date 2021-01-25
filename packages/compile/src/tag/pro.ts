@@ -4,7 +4,9 @@ import {
   IS_TAG
 } from './tag'
 import {
-  Prop
+  Prop,
+  Props,
+  buildPropsByList
 } from '../props'
 import * as assert from '../utils/assert'
 
@@ -13,7 +15,7 @@ import {
 } from './assert'
 
 
-export function node(type: TagType, tag: any, props?: Prop[], children?: Tag[]): Tag{
+export function node(type: TagType, tag: any, props?: Props, children?: Tag[]): Tag{
   return {
     tag,
     type,
@@ -42,7 +44,7 @@ export function textTag(tag: any): Tag{
 
 export function selfTag(tag: any, props?: Prop | Prop[]): Tag {
   const _props = assert.isArray(props) ? props : props ? [ props ] : props
-  return node(TagType.SELF, tag, _props)
+  return node(TagType.SELF, tag, buildPropsByList(_props))
 }
 
 /**
@@ -79,7 +81,7 @@ export function nativeTag(tag: any, props?: Prop | Prop[], children?: any): Tag 
     _children = [textTag(children)]
   }
   
-  return node(TagType.NATIVE, tag, _props, _children)
+  return node(TagType.NATIVE, tag, buildPropsByList(_props), _children)
 }
 
 export function dynamiceTag(tag: any): Tag {

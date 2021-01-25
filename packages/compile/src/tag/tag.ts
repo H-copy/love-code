@@ -1,5 +1,5 @@
 import {
-  Prop
+  Props
 } from '../props'
 
 export enum TagType{
@@ -15,7 +15,7 @@ export interface Tag {
   isTag: '__TAG'
   tag: any
   type: TagType
-  props?: Prop[]
+  props?: Props
   children?: Tag[]
   parent?: Tag
   [s:string]: any

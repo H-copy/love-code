@@ -184,7 +184,7 @@ describe('prop vprop', () => {
     const p = vModelProp(value)
     expect(p).toMatchObject({
       type: VPropType.MODEL,
-      name: 'v-model',
+      name: 'v-model:modelValue',
       value,
       directive: {
         name: 'v-model',

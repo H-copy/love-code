@@ -18,7 +18,7 @@ describe('tag pro', () => {
       tag: 'span',
       parent: undefined,
       type: TagType.NATIVE,
-      props: undefined,
+      props: {},
       children: undefined,
     })
   })
@@ -32,7 +32,7 @@ describe('tag pro', () => {
       tag: 'div',
       parent: undefined,
       type: TagType.NATIVE,
-      props: [p],
+      props: { id: p },
       children: undefined,
     })
   
@@ -48,7 +48,7 @@ describe('tag pro', () => {
       tag: 'div',
       parent: undefined,
       type: TagType.NATIVE,
-      props: [p1, p2],
+      props: { id: p1, class: p2 },
       children: undefined,
     })
   
@@ -66,7 +66,7 @@ describe('tag pro', () => {
       tag: 'button',
       parent: undefined,
       type: TagType.NATIVE,
-      props: [p],
+      props: { id: p },
       children: [
         textTag(child)
       ],
@@ -82,7 +82,7 @@ describe('tag pro', () => {
       tag: 'div',
       parent: undefined,
       type: TagType.NATIVE,
-      props: [p],
+      props: { id: p },
       children: [ child ],
     })
   })
@@ -97,7 +97,7 @@ describe('tag pro', () => {
       tag: 'div',
       parent: undefined,
       type: TagType.NATIVE,
-      props: [p],
+      props: { id: p },
       children: [ child1, child2 ],
     })
   })
@@ -108,7 +108,7 @@ describe('tag pro', () => {
       tag: '',
       parent: undefined,
       type: TagType.TEXT,
-      props: undefined,
+      props: {},
       children: undefined
     })
 
@@ -117,7 +117,7 @@ describe('tag pro', () => {
       tag: '',
       parent: undefined,
       type: TagType.TEXT,
-      props: undefined,
+      props: {},
       children: undefined
     })
   })
@@ -149,7 +149,7 @@ describe('tag pro', () => {
       type: TagType.SELF,
       parent: undefined,
       tag: 'hr',
-      props: [p],
+      props: { id: p },
       children: undefined
     })
   })
