@@ -21,12 +21,16 @@
 </style>
 <template>
   <div>
-  <div class='prop-panel' v-if='currentProps  && propsConf'>
+  <div class='prop-panel' v-if='propsConf'>
     <div class='prop-group' v-for='(group, key) of propsConf' :key='key'>
       <h1 class='prop-group-title'> {{ group.title }} </h1>
       <div class='prop-item' v-for='p of group.props' :key='p.key'>
         <h2 class='prop-item-label'> {{ p.label }} </h2>
-        <component :is='p.component' v-model:value='currentProps[p.key]'>
+        <component
+        :is='p.component' 
+        :default='p.default'
+        @update:modelValue='d => setProp(d, p.key)'
+        :modelValue='getProp(p.key)'> 
         </component>
       </div>
     </div>
@@ -44,25 +48,40 @@ export default defineComponent({
     const currentCmp = computed(() => {
       return store.state.active 
     })
-    const currentProps = computed(() => {
-      const _p = store.getters.currentProp
-      return _p ? _p.reduce((acc: { [k: string]: Prop }, next: Prop) => {
-        return { ...acc, [next.name]: next.value }
-      }, {}) : null
-    })
+    
+    const currentProps = computed(() => store.getters.currentProp)
 
     const propsConf = computed(() => {
+      console.log('>>>', currentCmp.value)
       if (currentCmp.value){
         return store.state.s_props.propsList[currentCmp.value.name] || null
       }
       return null
     })
 
+    
+    const getProp = (k: string): Prop => {
+      const _t = currentProps.value.find((item) => item.name === k)
+      if (_t){
+        return _t.value
+      }
+      return null
+    }
+    
+    const setProp = (d: any, k: string) => {
+      const t = currentProps.value.find((item) => item.name === k)
+      if (t){
+        t.value = d
+      }
+    }
+
     return {
       propsConf,
       currentProps,
-
       currentCmp,
+
+      setProp,
+      getProp
     }
   }
 })

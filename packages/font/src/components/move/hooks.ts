@@ -163,15 +163,15 @@ export function useMovePoint(ctx: SetupContext, updateBlock: (d: MoveBlock) => v
 export function useMoveBlock(ctx: SetupContext) {
   const unit = ref('px')
   const moveBlock = ref<MoveBlock>({
-    width: 120,
-    height: 120,
+    width: 0,
+    height: 0,
     top: 0,
     bottom: 0,
     left: 0,
     right: 0,
   })
 
-  const updateBlock = (data: { [k: string]: number }) => {
+  const updateBlock = (data: MoveBlock) => {
     const _data = { ...moveBlock.value, ...data }
     if (_data.width <= 0) {
       _data.width = 0
@@ -184,7 +184,7 @@ export function useMoveBlock(ctx: SetupContext) {
   }
 
   // 防止尺寸为零时，元素移动
-  const mouseMoveLock = (d: { [k: string]: number }) => {
+  const mouseMoveLock = (d: MoveBlock) => {
     const _d = { ...d }
     if (_d.width <= 0) {
       _d.width = 0
@@ -224,7 +224,7 @@ export function useMoveBlock(ctx: SetupContext) {
       top: top + diff.y,
       left: left + diff.x
     })
-    ctx.emit('blockMouseDown', moveBlock.value)
+    ctx.emit('blockMouseMove', moveBlock.value)
   }
 
   const onMouseUp = () => {

@@ -1,0 +1,18 @@
+.prop-panel{
+  padding 10px
+}
+.prop{
+  &-group{
+    &-title{
+      border-bottom 1px  solid #eee
+      font-size 18
+    }
+  }
+  
+  &-item{
+    &-label{
+      font-size 14px
+    }
+    margin-top 8px
+  }
+}

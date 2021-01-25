@@ -30,6 +30,7 @@ export default createStore({
     },
 
     setActive(state, node: TTag) {
+      console.log('active', node, state.active)
       if (state.active && state.active.id === node.id) {
         return
       }

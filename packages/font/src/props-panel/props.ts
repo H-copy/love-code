@@ -1,13 +1,20 @@
 export interface Prop{
   component: any,
-  key: string
+  key: string,
   label?: string,
-  default?: any
+  default?: any,
+  options?: any
+}
+
+export interface PropGroupItem{
+  title: string
+  props: { [k: string]: Prop }
 }
 
 export interface PropGroup {
-  [c: string]: {
-    title: string
-    props: { [k: string]: Prop }
-  }
+  [p: string]: PropGroupItem
+}
+
+export interface CmpPropGroup {
+  [c: string]: PropGroup
 }

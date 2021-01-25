@@ -10,7 +10,6 @@ import {
 import { useStore } from 'vuex'
 
 import {
-  Tag,
   isDynamicTag,
   isSlefTag,
   isTextTag,

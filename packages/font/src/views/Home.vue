@@ -79,43 +79,19 @@ import { useStore } from 'vuex'
 import * as compile from '@love-code/compile'
 import prettify from 'html-prettify'
 import { Button, Input } from 'ant-design-vue'
-// import { MoveBlock, Move } from '../components/move'
-// import { BabySitter } from '../components/baby-sitter'
 import CmpPanel from './cmp-panel.vue'
 import PropPanel from './prop-panel.vue'
 import { Render } from '../components/render'
 import { useDragArea } from '../hooks'
 import * as creator from '../creator'
 
-
 export default defineComponent({
   components: {
     CmpPanel,
     PropPanel,
-    // Move,
-    // BabySitter,
     Render,
   },
   setup() {
-    // const cmpSize = ref({
-    //   width: 200,
-    //   height: 200
-    // })
-    // const style = computed(() => {
-    //   const { width, height } = cmpSize.value
-    //   return {
-    //     width: `${width}px`,
-    //     height: `${height}px`
-    //   }
-    // })
-
-    // const moveBlockUpdate = (d: MoveBlock) => {
-    //   cmpSize.value = {
-    //     width: d.width,
-    //     height: d.height
-    //   }
-    // }
-
     const globalCtx = ref({})
     const localCtx = ref({})
     const store = useStore()
@@ -158,10 +134,6 @@ export default defineComponent({
     const { dragEvents } = useDragArea(onDrag)
 
     return {
-      // cmpSize,
-      // style,
-      // moveBlockUpdate,
-
       root,
       globalCtx,
       localCtx,

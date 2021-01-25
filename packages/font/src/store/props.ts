@@ -1,9 +1,6 @@
+import { PInput } from '../components/p-input'
 import {
-  Input,
-} from 'ant-design-vue'
-
-import {
-  PropGroup
+  CmpPropGroup
 } from '../props-panel'
 
 export default {
@@ -14,15 +11,29 @@ export default {
           title: 'style',
           props: {
             background: {
-              component: Input,
-              label: 'background',
-              key: 'background',
-              default: '#eee'
+              component: PInput,
+              label: 'style.backgound',
+              key: 'v-bind:type',
+              default: '',
+              options: {}
+            }
+          }
+        }
+      },
+      'a-button': {
+        base: {
+          title: 'base',
+          props: {
+            type: {
+              component: PInput,
+              label: 'type',
+              key: 'type',
+              default: 'primary'
             }
           }
         }
       }
-    } as { [c: string]: PropGroup }
+    } as CmpPropGroup
   })
 }
 
