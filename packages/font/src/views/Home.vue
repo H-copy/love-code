@@ -53,7 +53,9 @@
     </div>
     <div class='lc-content' v-on='dragEvents'>
       <Render v-if='root' :node='root' :globalCtx='globalCtx' :localCtx='localCtx' />
-
+      <div>
+        {{ strinify(root) }}
+      </div>
       <!-- <BabySitter>
         <Move :data="cmpSize" @update='moveBlockUpdate'>
           <div class='box' :style='style'></div>
@@ -73,7 +75,7 @@ import {
   computed,
   ref,
   watch,
-  onMounted
+  onMounted,
 } from 'vue'
 import { useStore } from 'vuex'
 import * as compile from '@love-code/compile'
@@ -84,6 +86,7 @@ import PropPanel from './prop-panel.vue'
 import { Render } from '../components/render'
 import { useDragArea } from '../hooks'
 import * as creator from '../creator'
+
 
 export default defineComponent({
   components: {
@@ -139,6 +142,7 @@ export default defineComponent({
       localCtx,
 
       dragEvents,
+      strinify: compile.tagtoString
     }
   }
 })
