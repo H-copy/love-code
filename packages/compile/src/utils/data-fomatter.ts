@@ -1,14 +1,8 @@
-import { 
-  isArray,
-  isObject,
-  isFunction,
-  isUndefined,
-  isString
-} from './assert'
+import { assert } from 'vx-tools'
 
 
 export function parseBase(data:any):string{
-  if (isUndefined(data)) {
+  if (assert.isUndefined(data)) {
     return "undefined"
   }
   return JSON.stringify(data)
@@ -18,15 +12,15 @@ export function parseArray(arr:any[]):string{
   
   return `[${arr.map(item => {
 
-    if(isArray(item)){
+    if(assert.isArray(item)){
       return parseArray(item)
     }
 
-    if(isFunction(item)){
+    if(assert.isFunction(item)){
       return item.toString()
     }
 
-    if(isObject(item)){
+    if(assert.isObject(item)){
       return parseObj(item)
     }
     
@@ -45,15 +39,15 @@ export function parseObj(data:{[s:string]: unknown}):string{
       return `${acc}${acc ? ',' : ''}${key}:${data}`
     }
 
-    if(isArray(val)){
+    if(assert.isArray(val)){
       d = parseArray(val)
     }
 
-    if(isFunction(val)){
+    if(assert.isFunction(val)){
       d = val.toString()
     }
 
-    if(isObject(val)){
+    if(assert.isObject(val)){
       d = parseObj(val)
     }
     
@@ -71,19 +65,19 @@ export function parseObj(data:{[s:string]: unknown}):string{
 
 
 export function dataFormatter(data:any):string{
-  if(isObject(data)){
+  if(assert.isObject(data)){
     return parseObj(data)
   }
 
-  if(isArray(data)){
+  if(assert.isArray(data)){
     return parseArray(data)
   }
 
-  if (isFunction(data)) {
+  if (assert.isFunction(data)) {
     return data.toString()
   }
 
-  if (isString(data)) {
+  if (assert.isString(data)) {
     return data
   }
 

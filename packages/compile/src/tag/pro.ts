@@ -8,7 +8,7 @@ import {
   Props,
   buildPropsByList
 } from '../props'
-import * as assert from '../utils/assert'
+import { assert } from 'vx-tools'
 
 import {
   isTag

@@ -11,14 +11,14 @@ import {
   isTextTag,
   isDynamicTag
 } from './assert'
-import { isString } from '../utils/assert'
+import { assert } from 'vx-tools'
 
 import {
   tagNameFormatter
 } from '../utils'
 
 export function getTagName(t: any): string {
-  return tagNameFormatter(isString(t) ? t : !!t ? t.name : '') 
+  return tagNameFormatter(assert.isString(t) ? t : !!t ? t.name : '') 
 }
 
 export interface GetTagName {

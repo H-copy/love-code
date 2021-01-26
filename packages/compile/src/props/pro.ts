@@ -13,7 +13,7 @@ import {
   IS_PROP
 } from './props'
 
-import * as assert from '../utils/assert'
+import { assert } from 'vx-tools'
 
 /**
  * 创建基础属性对象

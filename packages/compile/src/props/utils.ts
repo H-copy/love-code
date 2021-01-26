@@ -2,7 +2,7 @@ import {
   Prop,
   Props
 } from './props'
-import * as assert from '../utils/assert'
+import { assert } from 'vx-tools'
 
 export function buildPropsByList(p?: Prop[]): Props {
   if (assert.isUndefined(p)) {

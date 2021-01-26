@@ -1,4 +1,4 @@
-import * as assert from '../utils/assert'
+import { assert } from 'vx-tools'
 import {
   Prop
 } from './props'
