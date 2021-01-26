@@ -41,6 +41,7 @@ c_2.children = [ c_1 ]
 
 
 ## 方法
-- tagCreator 标签生成器 
+- tagCreator 标签生成器 `tagCreator(mod 标签配置, parentId 父标签id)`
 - propCreator 属性生成器
 - propListCreator 属性列表生成器
+
