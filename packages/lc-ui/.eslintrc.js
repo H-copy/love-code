@@ -16,7 +16,8 @@ module.exports = {
   rules: {
     'no-console': 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
-    ' @typescript-eslint/type-annotation-spacing': 'off'
+    '@typescript-eslint/type-annotation-spacing': 'off',
+    '@typescript-eslint/member-delimiter-style': 'off'
   },
   overrides: [
     {

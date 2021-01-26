@@ -28,6 +28,7 @@ const TS_SOURCE = [
   '../components/**/*.jsx',
   '../components/**/*.tsx',
   '../components/**/*.ts',
+  '../components/**/*.vue',
   '!components/*/__tests__/*',
 ]
 
