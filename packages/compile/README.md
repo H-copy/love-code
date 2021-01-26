@@ -26,7 +26,7 @@ nativeTag(
 // 对应模板 <input v-model='username'>
 nativeTag('input', vModelProp('username'))
 
-// 对应模板s <button v-on:click='onClick'></button>
+// 对应模板 <button v-on:click='onClick'></button>
 nativeTag('button', vEventProp('click', 'onClick'))
 
 ```
