@@ -2,6 +2,7 @@ import { isArray } from '@/utils/assert'
 import * as compile from '@love-code/compile'
 import { getCmpMark } from './utils'
 
+// 扩展Tag类型, 新增组标识id 
 export interface TTag extends compile.Tag{
   id: string
   name: string
@@ -64,7 +65,10 @@ export function propListCreator(mod: PropMod | PropMod[]) {
   }, [] as compile.Prop[])
 }
 
-
+/* 属性生成器
+ * @params mod 标签配置
+ * @params parentId 父标签id
+ */
 export function tagCreator(mod: CmpMod, parentId?: string): TTag {
   const {
     component,
