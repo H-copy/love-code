@@ -1,6 +1,7 @@
 export const IS_PROP = '__Prop'
 
-export interface Prop{
+// 基础属性对象
+export interface Prop {
   name: string
   type: string
   value: any
@@ -8,11 +9,13 @@ export interface Prop{
   [s: string]: any
 }
 
+// dom 属性类型
 export enum BasePropType {
   NATIVE = '__NATIVE',
   SELF = '__SELF',
 }
 
+// vue 指令属性类型
 export enum VPropType {
   FOR = '__FOR',
   SLOT = '__SLOT',
@@ -24,10 +27,9 @@ export enum VPropType {
   DYNAMIC = '__DYNAMIC',
 }
 
-export interface Props{
+export interface Props {
   [k: string]: Prop
 }
-
 
 /**
  * 指令参数配置
@@ -45,6 +47,7 @@ export interface VDirective {
   isSelf?: boolean
 }
 
+// vue 指令属性
 export interface VDirectiveProp extends Prop {
   directive: VDirective
 }
@@ -69,7 +72,8 @@ export function vDirectiveNameFormatter(d: VDirective) {
   return `${name}${_arg}${_modifiers ? '.' + _modifiers : ''}`
 }
 
-export interface VPreDirective{
+// vue 指令配置对象
+export interface VPreDirective {
   arg?: string
   modifiers?: string[]
   isDynamic?: boolean
@@ -81,18 +85,17 @@ export interface VPreDirective{
 export type VEventValue = string | ((...args: any) => any)
 
 
-
 /**
  * v-for
  */
-export interface VForValue{
+export interface VForValue {
   value: number | string | any[] | typeof Object
   item?: string
   index?: string
   key?: string
 }
 
-export interface VForValueDynamice{
+export interface VForValueDynamice {
   dynamice: string
   item?: string
   index?: string

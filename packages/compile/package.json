@@ -10,7 +10,7 @@
     "build:rollup": "rm -fr lib && set NODE_ENV=production&& rollup -c rollup.config.js",
     "dev": "gulp --color --gulpfile ./scripts/dev.js",
     "build": "gulp -cwd ./ --color --gulpfile ./scripts/build.js",
-    "test": "jest __test__",
+    "test": "jest --coverage __test__",
     "concat:types": "api-extractor run"
   },
   "keywords": [
