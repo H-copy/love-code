@@ -37,6 +37,7 @@ nativeTag('button', vEventProp('click', 'onClick'))
 dev  // 开发
 build // 生成包
 test // 测试
+doc // 查看文档, 依赖 http-server
 
 ```
 
