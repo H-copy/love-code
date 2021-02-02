@@ -22,6 +22,7 @@ import {
  * @param children 嵌套子标签
  * @returns { Tag }
  * @example
+ * ``` typescript
  * node(TagType.NATIVE, 'div', nativeProp('id', 'box'), node(TagType.NATIVE, 'span'))
  * => {
  *  isTag: '__TAG',
@@ -30,7 +31,7 @@ import {
  *  props: { id: { ... } },
  *  children: [ { tag: 'span', ... } ]
  * }
- * 
+ * ```
  */
 export function node(type: TagType, tag: any, props?: Props, children?: Tag[]): Tag{
   return {
@@ -47,6 +48,7 @@ export function node(type: TagType, tag: any, props?: Props, children?: Tag[]): 
  * 文本节点
  * @param tag 节点内容 
  * @example
+ * ``` typescript
  * 1. textTag(null)
  * => ''
  * 
@@ -65,6 +67,7 @@ export function node(type: TagType, tag: any, props?: Props, children?: Tag[]): 
  * 
  * 5. textTag(() => {...})
  * => '() => {...}'
+ * ```
  */
 export function textTag(tag: any): Tag{
   if (assert.isNull(tag) || assert.isUndefined(tag)) {
@@ -87,6 +90,7 @@ export function textTag(tag: any): Tag{
  * @param tag 标签名
  * @param props 标签属性
  * @example
+ * ``` typescript
  * 1. selfTag('hr', nativeProp('class', 'line'))
  * => {
  *    isTag: '__TAG',
@@ -101,6 +105,7 @@ export function textTag(tag: any): Tag{
  *    props: { class: { ... }, styl: { ... } },
  *    ...
  *  }
+ * ```
  */
 export function selfTag(tag: any, props?: Prop | Prop[]): Tag {
   const _props = assert.isArray(props) ? props : props ? [ props ] : props
@@ -114,11 +119,13 @@ export function selfTag(tag: any, props?: Prop | Prop[]): Tag {
  * @param children 子标签
  * @returns Tag
  * @example
+ * ``` typescript
  * 1. nativeTag('div')
  * 2. nativeTag('div', nativeProp('id', 'body'))
  * 3. nativeTag('div', [nativeProp('id', 'body'), nativeProp('class', 'full')])
  * 4. nativeTag('div', nativeProp('id', 'body'), nativeTag('div'))
  * 5. nativeTag('div', nativeProp('id', 'body'), 'body')
+ * ```
  */
 export function nativeTag(tag: any, props?: Prop | Prop[], children?: any): Tag {
   const _props = assert.isArray(props) ? props : !!props ? [props] : undefined
@@ -147,6 +154,7 @@ export function nativeTag(tag: any, props?: Prop | Prop[], children?: any): Tag 
  * 动态属性标签
  * @param tag 挂载属性
  * @example
+ * ``` typescript
  * dynamiceTag('content')
  * => {
  *   isTag: '__TAG',
@@ -155,6 +163,7 @@ export function nativeTag(tag: any, props?: Prop | Prop[], children?: any): Tag 
  *   props: {},
  *   children: undefined
  * }
+ * ```
  */
 export function dynamiceTag(tag: any): Tag {
   return node(TagType.DYNAMIC, tag)

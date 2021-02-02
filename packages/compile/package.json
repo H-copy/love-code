@@ -11,7 +11,10 @@
     "dev": "gulp --color --gulpfile ./scripts/dev.js",
     "build": "gulp -cwd ./ --color --gulpfile ./scripts/build.js",
     "test": "jest --coverage __test__",
-    "concat:types": "api-extractor run"
+    "concat:types": "api-extractor run",
+    "doc:build": "typedoc --options ./typedoc.config.json",
+    "doc:watch": "typedoc --watch --options ./typedoc.config.json",
+    "doc": "http-server ./docs -p 7000"
   },
   "keywords": [
     "love-code"
@@ -38,6 +41,7 @@
     "rollup-plugin-eslint": "^7.0.0",
     "rollup-plugin-typescript2": "^0.29.0",
     "ts-jest": "^26.4.4",
+    "typedoc": "^0.20.20",
     "typescript": "^4.1.3"
   },
   "dependencies": {

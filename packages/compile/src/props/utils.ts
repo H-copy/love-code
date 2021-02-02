@@ -4,6 +4,18 @@ import {
 } from './props'
 import { assert } from 'vx-tools'
 
+/**
+ * 属性集生成器
+ * @param p 属性列表
+ * @returns
+ * @example
+ * ``` typescript
+ * const p1 = { name: 'p_1', ... }
+ * const p2 = { name: 'p_2', ... }
+ * buildPropsByList([p1, p2])
+ * => { 'p_1': p1, 'p_2': p2 }
+ * ```
+ */
 export function buildPropsByList(p?: Prop[]): Props {
   if (assert.isUndefined(p)) {
     return {}
@@ -14,7 +26,11 @@ export function buildPropsByList(p?: Prop[]): Props {
   }, {} as Props)
 }
 
-// 基础数据类型转字符
+/**
+ * 基础数据类型转字符
+ * @param data 
+ * @returns
+ */
 export function parseBase(data:any):string{
   if (assert.isUndefined(data)) {
     return "undefined"
@@ -22,7 +38,16 @@ export function parseBase(data:any):string{
   return JSON.stringify(data)
 }
 
-// 数组转字符
+/**
+ * 数组转字符
+ * @param arr 
+ * @returns 
+ * @example
+ * ``` typescript
+ * parseArray([1, 2, 3, 'one'])
+ * => '[1, 2, 3, "one"]'
+ * ```
+ */
 export function parseArray(arr:any[]):string{
   
   return `[${arr.map(item => {
@@ -45,7 +70,17 @@ export function parseArray(arr:any[]):string{
   
 }
 
-// 对象转字符
+/**
+ * 对象转字符
+ * @param data 
+ * @returns
+ * @example
+ * ``` typescript
+ *  parseObj({id: 12, type: 'div'})
+ *  => '{id: 12, type: "div"}'
+ * 
+ * ```
+ */
 export function parseObj(data:{[s:string]: unknown}):string{
   const d = Object.entries(data).reduce((acc, [key, val]) =>{
 
@@ -79,7 +114,30 @@ export function parseObj(data:{[s:string]: unknown}):string{
   return `{${d}}`
 }
 
-// 数据转字符
+/**
+ * 数据转字符
+ * @param data 
+ * @returns string
+ * @example
+ * ``` typescript
+ * 
+ * // 1. 函数
+ *  dataFormatter(() => {})
+ * => '() => {}'
+ * 
+ * // 2. 对象
+ * dataFormatter({ name: 'c', age: 12 })
+ * => '{ name: "c" , age: 12 }'
+ * 
+ * // 3. 数组 
+ *  dataFormatter(['c', 12])
+ * => '["c", 12]'
+ * // 4. 基础类型
+ * dataFormatter(true)
+ * => 'true' 
+ * 
+ * ```
+ */
 export function dataFormatter(data:any):string{
   if(assert.isObject(data)){
     return parseObj(data)

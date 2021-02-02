@@ -22,8 +22,10 @@ import {
  * 生成基础属性模板
  * @param d 属性对象
  * @example
+ * ``` typescript
  * propStrinify(nativeProp('id', 'box'))
  * => id='box'
+ * ```
  */
 export function propStrinify(d: Prop): string {
   return `${d.name}='${dataFormatter(d.value)}'`
@@ -33,8 +35,10 @@ export function propStrinify(d: Prop): string {
  * 生成自闭和标签模板
  * @param d 
  * @example
+ * ``` typescript
  * selfPropStrinify(selfProp('disabled'))
  * => 'disabled'
+ * ```
  */
 export const selfPropStrinify = (d: Prop): string => {
   return `${d.name}`
@@ -45,11 +49,13 @@ export const selfPropStrinify = (d: Prop): string => {
 /**
  * ref
  * @example
+ * ``` typescript
  * 1. vRefPropStringify(vRefProp('formEle'))
  * => ref='formEle'
  * 
  * 2. vRefPropStringify(vRefProp(e => {...}))
  * => :ref='e => {...}'
+ * ```
  */
 export const vRefPropStringify = (d: Prop): string => {
   if (assert.isFunction(d.value)) {
@@ -77,8 +83,10 @@ export const vForPropStringify = (d: Prop): string => {
 /**
  * 属性模板生成器
  * @example
+ * ``` typescript
  * propToString(vEventProp({ arg: 'click',  modifiers: ['stop'] }, 'onClick'))
  * => v-on:click.stop='onClick'
+ * ```
  */
 export const propToString = (d: Prop) =>{
   const formatterMap = [

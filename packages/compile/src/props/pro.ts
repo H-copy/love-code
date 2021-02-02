@@ -22,6 +22,7 @@ import { assert } from 'vx-tools'
  * @param value 属性值
  * @returns { Prop }
  * @example 
+ * ``` typescript
  * prop(BasePropType.NATIVE, 'id', 'container')
  * => { 
  *    name: 'id',
@@ -29,12 +30,14 @@ import { assert } from 'vx-tools'
  *    type: '__NATIVE',
  *    isProp: '__Prop'
  *  }
+ * ```
  */
 export function prop(type: string, name: string, value?: any): Prop {
   return { name, type, value, isProp: IS_PROP }
 }
 
 /* 基础 DOM 属性 */
+
 export function nativeProp(name: string, value?: string): Prop {
   return prop(BasePropType.NATIVE, name, value)
 }
@@ -52,11 +55,13 @@ export function selfProp(name: string): Prop {
  * 这里将指令看做一类 vue 标签属性, 通过指令配置生成对应的
  * 属性名称, 例如： { name: 'v-on', arg: 'click', modifiers: ['stop] }
  * => 'v-on:click.stop'
+ * 
  * @param type 属性类型
  * @param directive 指令配置
  * @param value 属性值
  * @returns { VDirectiveProp }
  * @example
+ * ``` typescript
  * vDirective(VPropType.DIRECTIVE, { name: 'h-size', arg: 'full' }, { width: 100, height: 100 })
  * => {
  *    name: 'h-size:full',
@@ -65,6 +70,7 @@ export function selfProp(name: string): Prop {
  *    isProp: '__Prop',
  *    directive: { name: 'h-size', arg: 'full' } // 指令配置缓存, 提供给渲染器生成对应指令
  *  }
+ * ```
  */
 export function vDirective(type: VPropType, directive: VDirective, value?: any): VDirectiveProp {
   return {
@@ -79,6 +85,7 @@ export function vDirective(type: VPropType, directive: VDirective, value?: any):
  * @param value 
  * @returns { VDirectiveProp }
  * @example
+ * ``` typescript
  * vDirectiveProp({ name: 'v-on', arg: 'click' }, 'onClick')
  * => {
  *   name: 'v-on:click',
@@ -87,6 +94,7 @@ export function vDirective(type: VPropType, directive: VDirective, value?: any):
  *   isProp: '__Prop',
  *   directive: { name: 'v-on', arg: 'click' }
  * }
+ * ```
  */
 export function vDirectiveProp(name: VDirective, value: any): VDirectiveProp {
   return vDirective(VPropType.DIRECTIVE, name, value)
@@ -97,6 +105,7 @@ export function vDirectiveProp(name: VDirective, value: any): VDirectiveProp {
  * @param name 指令对象 | 事件名 
  * @param value 挂载属性 | 事件函数
  * @example
+ * ``` typescript
  * 1. vEventProp('click', 'onClick')
  * => {
  *    name: 'v-on:click',
@@ -118,7 +127,7 @@ export function vDirectiveProp(name: VDirective, value: any): VDirectiveProp {
  *  value: 'onClick',
  *  ...
  * }
- * 
+ * ```
  */
 export function vEventProp(name: VPreDirective | string, value: VEventValue): VDirectiveProp {
   const _directive = assert.isString(name) ? { arg: name, name: 'v-on' } : { ...name, name: 'v-on' }
@@ -131,6 +140,7 @@ export function vEventProp(name: VPreDirective | string, value: VEventValue): VD
  * @param name 绑定属性名
  * @param value 挂载属性
  * @example
+ * ``` typescript
  * 1. vDynamiceProp('name', 'userName')
  * => {
  *    name: 'v-bind:name',
@@ -144,6 +154,7 @@ export function vEventProp(name: VPreDirective | string, value: VEventValue): VD
  * => {
  *   value: ['01', '02']
  * }
+ * ```
  */
 export function vDynamiceProp(name: string, value: any): VDirectiveProp {
   const _directive = { name: 'v-bind', arg: name }
@@ -156,7 +167,8 @@ export function vDynamiceProp(name: string, value: any): VDirectiveProp {
  * 需要匹配形式:
  * 1. v-model='value'
  * 2. v-model:change='value'
- * @example
+ * @example 
+ * ``` typescript
  * 1. vModelProp('title')
  * => {
  *    name: 'v-model:modelValue',
@@ -174,6 +186,7 @@ export function vDynamiceProp(name: string, value: any): VDirectiveProp {
  *    isProp: '__Prop',
  *    directive: { name: 'v-model', arg: 'value' }
  * }
+ * ```
  */
 export function vModelProp(model: any, value?: any): VDirectiveProp {
   // 匹配参数模式 v-model='value'
@@ -197,6 +210,7 @@ export function vModelProp(model: any, value?: any): VDirectiveProp {
  * @param poistion 插槽名称
  * @param value 插槽值
  * @example
+ * ``` typescript
  * 1. vSlotProp()
  * => {
  *  name: 'v-slot:default',
@@ -205,6 +219,7 @@ export function vModelProp(model: any, value?: any): VDirectiveProp {
  *  isProp: '__Prop',
  *  directive: { name: 'v-slot', arg: 'default' }
  * }
+ * ```
  */
 export function vSlotProp(poistion = 'default', value?: any): VDirectiveProp {
   const _directive = { name: 'v-slot', arg: poistion }
@@ -215,6 +230,7 @@ export function vSlotProp(poistion = 'default', value?: any): VDirectiveProp {
  * v-if 指令属性
  * @param value 挂载属性名 | 布尔值
  * @example
+ * ``` typescript
  * 1. vIfProp('visibal')
  * => {
  *   name: 'v-if',
@@ -229,6 +245,7 @@ export function vSlotProp(poistion = 'default', value?: any): VDirectiveProp {
  *   value: true,
  *   ...
  * }
+ * ```
  */
 export function vIfProp(value: string | boolean): VDirectiveProp {
   const _directive = { name: 'v-if' }
@@ -241,7 +258,7 @@ export function vIfProp(value: string | boolean): VDirectiveProp {
  * @param value 挂载名称，或挂载方法
  * @returns 返回指令属性对象
  * @example
- * 
+ * ``` typescript
  * 1. vRefProp('formEle')
  * => {
  *  name: 'ref,
@@ -256,6 +273,7 @@ export function vIfProp(value: string | boolean): VDirectiveProp {
  *  value: ele => {...},
  *  ...
  * }
+ * ```
  */
 export function vRefProp(value: string | ((...args: any) => any)): VDirectiveProp {
   const _directive = { name: 'ref' }
