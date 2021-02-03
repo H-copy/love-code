@@ -1,0 +1,4 @@
+/* --- function --- */
+
+prefixCls(name)
+  return lc- + name

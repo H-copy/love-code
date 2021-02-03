@@ -1,9 +1,14 @@
 import { App } from 'vue'
 import { Move, moveHooks } from './move'
-
+import { TypeDropDown } from './type-dropdown'
+import { PropsPanel } from './props-panel'
+import { PropsItem } from './props-item'
 
 const components = {
   Move,
+  TypeDropDown,
+  PropsPanel,
+  PropsItem
 }
 
 

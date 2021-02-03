@@ -1,2 +1,2 @@
-export { default as Move } from './move.vue'
+export { default as Move } from './Move.vue'
 export * as moveHooks from './hooks'

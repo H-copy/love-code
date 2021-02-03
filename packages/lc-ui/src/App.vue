@@ -1,54 +1,62 @@
 <style lang="stylus" scoped>
-.container{
-  width: 500px;
-  margin: auto;
+.editor{
+  position absolute
+  top 0
+  bottom 0
+  left 0
+  right 0
+  margin auto
+  box-size border-box
+  
+  display flex
+  justify-content space-between
+  align-items stretch
 }
-.box{
-  border: 1px solid #eee
-}
+
+
 </style>
 <template>
-  <div class="container">
-    <Move :data='info' @update='update' >
-      <div class='box' :style='style'></div>
-    </Move>
+  <div class="editor">
+
+    <div class='cmp-panel'>
+
+    </div>
+    
+    <div class='box'>
+
+    </div>
+    
+    <lc-props-panel>
+      
+      <lc-type-dropdown title='style'>
+        show me
+      </lc-type-dropdown>
+      
+      <lc-type-dropdown title='options'>
+        <lc-props-item label='padding'>
+          <template #name>
+            padding by slot
+          </template>
+        </lc-props-item>
+      </lc-type-dropdown>
+      
+       <lc-type-dropdown title='ccc'>
+      </lc-type-dropdown>
+      
+    </lc-props-panel>
+
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed } from 'vue'
-import { Move, MoveBlock } from '../components'
+import {
+  defineComponent
+} from 'vue'
+
 
 export default defineComponent({
-  components: {
-    Move
-  },
   setup(){
-    const info = ref({
-      width: 100,
-      height: 100
-    })
-
-    const style = computed(() => {
-      const { width, height } = info.value
-      return {
-        width: `${width}px`,
-        height: `${height}px`
-      }
-    })
-
-     const update = (d: MoveBlock) => {
-      info.value = {
-        width: d.width,
-        height: d.height
-      }
-    }
-    
-    return {
-      info,
-      style,
-      update
-    }
+    return {}
   }
 })
 </script>

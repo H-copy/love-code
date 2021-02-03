@@ -1,16 +1,21 @@
 <style lang='stylus' scoped>
+@import '../_assets/stylus/variable.stylus';
+
+$cmpName = prefixCls('move')
+$pointName = prefixCls('move-point')
 $color = orange
-.move{
+
+.{$cmpName}{
   position absolute
   border 1px dashed transparent
   $pointSize=10px
   &:hover{
     border-color $color
-    .move-point{
+    .{$pointName}{
       opacity 1
     }
   }
-  &-point{
+  .{$pointName}{
     opacity 0
     position absolute
     width $pointSize
@@ -77,13 +82,12 @@ $color = orange
 }
 </style>
 <template>
-  <div class='move' :style='moveBlockStyle' @mousedown.stop='onMouseDown' >
+  <div :class='moveClass' :style='moveBlockStyle' @mousedown.stop='onMouseDown' >
     <slot></slot>
       <div
-      class='move-point'
+      :class='[pointClass, type]'
       v-for='type of movePoints'
       @mousedown.stop='e => onPointMousedown(e, moveBlock, type)'
-      :class='type'
       :key='type'>
       </div>
   </div>
@@ -96,9 +100,14 @@ import {
   movePoints,
   MoveBlock
 } from './hooks'
+import className from '../_utils/className'
+import componentName from '../_utils/componentName'
+
+const moveClass = className('move')
+const pointClass = className('move-point')
 
 export default defineComponent({
-  name: 'l-move',
+  name: componentName('move'),
   props: {
     unit: {
       type: String,
@@ -117,6 +126,7 @@ export default defineComponent({
     }
   },
   setup(props, ctx){
+  
     const {
       unit,
       moveBlock,
@@ -140,6 +150,9 @@ export default defineComponent({
     updateBlock(props.data)
     
     return {
+      moveClass,
+      pointClass,
+      
       movePoints,
       moveBlockStyle,
       moveBlock,

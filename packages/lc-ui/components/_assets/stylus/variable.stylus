@@ -1,0 +1,39 @@
+/* 预设值 */
+
+
+/* --- size --- */
+$fontSize_mainHead = 20px
+$fontSize_subHead = 18px
+$fontSize_head = 16px
+$fontSize_text = 14px
+$fontSize_subText = 12px
+
+$padding_df = 10px
+$padding_sm = 6px
+$padding_lg = 14px
+
+
+/* --- color --- */
+$color_white = #ffffff
+$color_grey_1 = #CBCBCB
+
+$color_black_1 = #000000
+$color_black_2 = #171A21
+$color_black_3 = #1E2129
+$color_black_4 = #252931
+
+$lightYellow = #FDF202
+$lightBlue = #02d8f3
+$lightRed = #FF003C
+
+// color alias 
+$color_bg = $color_black_3
+
+$color_border_df = $color_black_4
+
+$color_font_text = $color_grey_1
+
+$color_font_wn = $lightYellow
+$color_font_sc = $lightBlue
+$color_font_dg = $lightRed
+
