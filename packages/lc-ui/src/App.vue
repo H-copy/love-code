@@ -34,9 +34,7 @@
       
       <lc-type-dropdown title='options'>
         <lc-props-item label='padding'>
-          <template #name>
-            padding by slot
-          </template>
+          <a-input></a-input>
         </lc-props-item>
       </lc-type-dropdown>
       

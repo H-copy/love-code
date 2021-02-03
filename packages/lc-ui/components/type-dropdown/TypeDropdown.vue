@@ -79,7 +79,7 @@ export default defineComponent({
     },
     initStatus: {
       type: Boolean,
-      default: false
+      default: true
     }
   },
   setup(props){

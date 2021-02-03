@@ -1,4 +1,27 @@
 <style lang='stylus' scoped>
+@import '../_assets/stylus/reset.stylus'
+@import '../_assets/stylus/variable.stylus'
+@import '../_assets/stylus/tools.stylus'
+
+$cmp = prefixCls(props-item)
+
+.{$cmp}{
+
+  &.horizontal{
+    .{$cmp}{
+      &.label{
+        margin-bottom 10px
+      }
+    }
+  }
+
+  &.vertical{
+    display flex
+    justify-content space-between
+    align-items stretch
+  }
+  
+}
 
 </style>
 <template>
@@ -7,7 +30,7 @@
       {{ label }}
       <slot name='label'></slot>
     </label>
-    <!-- <slot name='default'></slot> -->
+    <slot name='default'></slot>
   </div>
 </template>
 <script lang='ts'>
@@ -34,9 +57,9 @@ export default defineComponent({
       default: 'horizontal'
     }
   },
-  setup(){
+  setup(props){
     const classNames = ref({
-      item: className('props-item'),
+      item: [className('props-item'), props.layoutType],
       label: className('props-item-label')
     })
     
