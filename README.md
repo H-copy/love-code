@@ -61,3 +61,9 @@ lerna run serve:lc-ui
 
 6. 组件解析器
   - [] vue 组件属性解析
+
+
+
+
+## 参考
+- [lerna](https://lernajs.bootcss.com/)
