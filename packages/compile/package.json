@@ -6,6 +6,9 @@
   "module": "lib/index.esm.js",
   "typings": "lib/index.d.ts",
   "scripts": {
+    "build:compile": "yarn build",
+    "doc:compile": "yarn doc",
+
     "dev:rollup": "set NODE_ENV=developemnt&& rollup -c rollup.config.js -w",
     "build:rollup": "rm -fr lib && set NODE_ENV=production&& rollup -c rollup.config.js",
     "dev": "gulp --color --gulpfile ./scripts/dev.js",
@@ -14,7 +17,7 @@
     "concat:types": "api-extractor run",
     "doc:build": "typedoc --options ./typedoc.config.json",
     "doc:watch": "typedoc --watch --options ./typedoc.config.json",
-    "doc": "http-server ./docs -p 7000"
+    "doc": "http-server ./docs -o -p 7000"
   },
   "keywords": [
     "love-code"

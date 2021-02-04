@@ -2,6 +2,7 @@
   "name": "@love-code/font",
   "version": "0.1.0",
   "scripts": {
+    "serve:font": "vue-cli-service serve",
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "test:unit": "vue-cli-service test:unit",

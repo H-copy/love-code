@@ -5,6 +5,9 @@
   "unpkg": "lib/lc-ui.umd.min.js",
   "types": "lib/types/index.d.ts",
   "scripts": {
+    "serve:lc-ui": "yarn serve",
+    "build:lc-ui": "yarn build",
+    
     "build:@love-code/lc-ui": "npm run build",
     "serve:@love-code/lc-ui": "npm run serve",
     "serve": "vue-cli-service serve",
