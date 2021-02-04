@@ -9,8 +9,14 @@ $fontSize_text = 14px
 $fontSize_subText = 12px
 
 $padding_df = 10px
-$padding_sm = 6px
 $padding_lg = 14px
+$padding_sm = 6px
+$padding_mn = 4px
+
+
+$margin_df = 10px
+$margin_sm = 6px
+$margin_df = 14px
 
 
 /* --- color --- */

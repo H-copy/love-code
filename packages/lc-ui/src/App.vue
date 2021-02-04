@@ -33,12 +33,31 @@
       </lc-type-dropdown>
       
       <lc-type-dropdown title='options'>
-        <lc-props-item label='padding'>
+
+        <lc-props-item label='padding' layoutType='vertical'>
           <a-input></a-input>
         </lc-props-item>
+
+        <lc-props-item label='padding' layoutType='vertical'>
+          <a-input></a-input>
+        </lc-props-item>
+        
       </lc-type-dropdown>
       
-       <lc-type-dropdown title='ccc'>
+      <lc-type-dropdown title='props'>
+
+        <lc-props-item label='number' layoutType='vertical'>
+          <lc-input-number v-model:value='n'></lc-input-number>
+        </lc-props-item>
+
+        <lc-props-item label='size' layoutType='vertical'>
+          <lc-input-size></lc-input-size>
+        </lc-props-item>
+
+        <lc-props-item label='unit' layoutType='vertical'>
+          <lc-size-unit v-model:value='unit'></lc-size-unit>
+        </lc-props-item>
+
       </lc-type-dropdown>
       
     </lc-props-panel>
@@ -48,13 +67,19 @@
 
 <script lang="ts">
 import {
-  defineComponent
+  defineComponent,
+  ref
 } from 'vue'
 
 
 export default defineComponent({
   setup(){
-    return {}
+    const n = ref(10)
+    const unit = ref('px')
+    return {
+      n,
+      unit
+    }
   }
 })
 </script>

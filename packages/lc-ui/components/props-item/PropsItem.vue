@@ -6,12 +6,19 @@
 $cmp = prefixCls(props-item)
 
 .{$cmp}{
+  & + &{
+    margin-top $margin_sm
+  }
+  
+  .{$cmp}-label{
+    display flex
+    align-items center
+  }
 
   &.horizontal{
-    .{$cmp}{
-      &.label{
-        margin-bottom 10px
-      }
+    .{$cmp}-label{
+      display block
+      margin-bottom $margin_sm
     }
   }
 
@@ -19,8 +26,11 @@ $cmp = prefixCls(props-item)
     display flex
     justify-content space-between
     align-items stretch
+    
+    .{$cmp}-label{
+      margin-right $margin_sm
+    }
   }
-  
 }
 
 </style>
@@ -28,8 +38,8 @@ $cmp = prefixCls(props-item)
   <div :class='classNames.item'>
     <label v-if='label' :class='classNames.label'>
       {{ label }}
-      <slot name='label'></slot>
     </label>
+    <slot name='label'></slot>
     <slot name='default'></slot>
   </div>
 </template>

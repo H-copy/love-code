@@ -11,7 +11,7 @@ $cmp = prefixCls(type-dropdown)
     display flex
     justify-content space-between
     align-items center
-    padding $padding_sm
+    padding $padding_mn $padding_sm
     background $lightYellow
     cursor pointer
     user-select none

@@ -3,12 +3,20 @@ import { Move, moveHooks } from './move'
 import { TypeDropDown } from './type-dropdown'
 import { PropsPanel } from './props-panel'
 import { PropsItem } from './props-item'
+import { InputNumber } from './input-number'
+import { InputSize } from './input-size'
+import { SaSelect } from './sa-select'
+import { SizeUnit } from './size-unit'
 
 const components = {
   Move,
   TypeDropDown,
   PropsPanel,
-  PropsItem
+  PropsItem,
+  InputNumber,
+  InputSize,
+  SaSelect,
+  SizeUnit,
 }
 
 
@@ -25,5 +33,12 @@ export default {
 
 export {
   Move,
-  moveHooks
+  moveHooks,
+  TypeDropDown,
+  PropsPanel,
+  PropsItem,
+  InputNumber,
+  InputSize,
+  SaSelect,
+  SizeUnit,
 }
