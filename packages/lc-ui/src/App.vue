@@ -62,23 +62,58 @@
       
     </lc-props-panel>
 
+
+    <div @mousewheel ='onMousewheel' class='out' style='width: 400px; height: 400px; overflow: auto; border: 1px solid #eee' >
+      <div class='in' style='width: 200%; height: 200%; background: orange' ></div>
+    </div>
+    ---
+    {{ count }}
+    ---
+
   </div>
 </template>
 
 <script lang="ts">
 import {
   defineComponent,
-  ref
+  ref,
+  watch
 } from 'vue'
 
+import useMousewheel from "./hook";
 
 export default defineComponent({
   setup(){
     const n = ref(10)
     const unit = ref('px')
+
+    const {
+      wheelEvent,
+      directionY,
+      isUp,
+      isDown,
+      onMousewheel
+    } = useMousewheel()
+    const count = ref(0)
+
+    watch(wheelEvent, () => {
+      console.log('y: ', directionY.value)
+      if(isUp(directionY.value)){
+        count.value -= 1
+      }
+      
+      if(isDown(directionY.value)){
+        count.value += 1
+      }
+
+    })
+    
     return {
       n,
-      unit
+      unit,
+
+      onMousewheel,
+      count
     }
   }
 })

@@ -72,7 +72,7 @@ export type MouseWheelDirection = 'up' | 'down'
  * 
  */
 export default function useMousewheel() {
-  const wheelEvent = ref<any>()
+  const wheelEvent = ref<WheelEvent>()
   const { state: direction, setLeft: setUp, setRight: setDown } = useToggle('up', 'down')
   const { state: disabled, setTrue: unUse, setFalse: canUse } = useBool()
   const isUp = computed(() => direction.value === 'up')
@@ -83,11 +83,12 @@ export default function useMousewheel() {
     }
   })
 
-  const onMousewheel = (e: any) => {
+  const onMousewheel = (e: WheelEvent) => {
     if (disabled.value) {
       return
     }
     wheelEvent.value = e
+    console.log('deltaMode >>>', e)
   }
 
   return {
