@@ -3,6 +3,9 @@
 /*/*/node_modules
 
 /packages/font/lib
+/packages/font/coverage
+
 /packages/lc-ui/lib
+/packages/lc-ui/coverage
 
 yarn.lock

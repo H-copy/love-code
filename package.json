@@ -3,6 +3,12 @@
   "private": true,
   "author": "copy-left",
   "devDependencies": {
-    "lerna": "^3.22.1"
+    "lerna": "^3.22.1",
+    "typedoc": "^0.20.23"
+  },
+  "scripts": {
+    "doc:build": "typedoc --options ./typedoc.config.json",
+    "doc:watch": "typedoc --watch --options ./typedoc.config.json",
+    "doc": "http-server ./docs -o -p 7000"
   }
 }

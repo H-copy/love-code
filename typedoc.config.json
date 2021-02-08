@@ -1,0 +1,10 @@
+{
+  "entryPoints" : [
+    "./pkgs/compile/src",
+    "./pkgs/lc-ui/components"
+  ],
+  "tsconfig": "./tsconfig-base.json",
+  "exclude": "**/__test__/*.ts",
+  "out": "./docs",
+  "excludeInternal": true
+}
