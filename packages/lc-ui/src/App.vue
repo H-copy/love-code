@@ -12,7 +12,9 @@
   justify-content space-between
   align-items stretch
 }
-
+.switch{
+  transform rotate(90deg)
+}
 
 </style>
 <template>
@@ -34,11 +36,11 @@
       
       <lc-type-dropdown title='options'>
 
-        <lc-props-item label='padding' layoutType='vertical'>
+        <lc-props-item label='padding'>
           <a-input></a-input>
         </lc-props-item>
 
-        <lc-props-item label='padding' layoutType='vertical'>
+        <lc-props-item label='padding'>
           <a-input></a-input>
         </lc-props-item>
         
@@ -46,29 +48,50 @@
       
       <lc-type-dropdown title='props'>
 
-        <lc-props-item label='number' layoutType='vertical'>
+        <lc-props-item label='number'>
           <lc-input-number v-model:value='n'></lc-input-number>
         </lc-props-item>
 
-        <lc-props-item label='size' layoutType='vertical'>
-          <lc-input-size></lc-input-size>
+        <lc-props-item label='size' :label-width='60'>
+          <lc-input-size v-model:value='curentSize' :disabled='true' ></lc-input-size>
         </lc-props-item>
 
         <lc-props-item label='unit' layoutType='vertical'>
-          <lc-size-unit v-model:value='unit'></lc-size-unit>
+          <lc-around :sides='["left", "right", "top", "bottom"]'> </lc-around>
         </lc-props-item>
+
+        <lc-props-item label='margin'>
+          <lc-mini-drawer>
+            <template #pref>
+              <lc-select style='width: 100%' type='OPTIONS' :options='options'></lc-select>
+            </template>
+
+            <template #next>
+              <a-input />
+            </template>
+
+          </lc-mini-drawer>
+        </lc-props-item>
+
+      
+
+        <!-- <a-row :gutter='10'>
+          <a-col :span='12'>
+          <lc-props-item label='unit' layoutType='vertical'>
+            <lc-input-size v-model:value='curentSize'></lc-input-size>
+          </lc-props-item>
+          </a-col>
+          <a-col :span='12'>
+          <lc-props-item label='unit' layoutType='vertical'>
+            <lc-input-size v-model:value='curentSize'></lc-input-size>
+          </lc-props-item>
+          </a-col>
+        </a-row> -->
 
       </lc-type-dropdown>
       
     </lc-props-panel>
 
-
-    <div @mousewheel ='onMousewheel' class='out' style='width: 400px; height: 400px; overflow: auto; border: 1px solid #eee' >
-      <div class='in' style='width: 200%; height: 200%; background: orange' ></div>
-    </div>
-    ---
-    {{ count }}
-    ---
 
   </div>
 </template>
@@ -77,43 +100,35 @@
 import {
   defineComponent,
   ref,
-  watch
 } from 'vue'
-
-import useMousewheel from "./hook";
 
 export default defineComponent({
   setup(){
     const n = ref(10)
     const unit = ref('px')
-
-    const {
-      wheelEvent,
-      directionY,
-      isUp,
-      isDown,
-      onMousewheel
-    } = useMousewheel()
-    const count = ref(0)
-
-    watch(wheelEvent, () => {
-      console.log('y: ', directionY.value)
-      if(isUp(directionY.value)){
-        count.value -= 1
+    const curentSize = ref('20px')
+    const checked = ref(false)
+    const options = [
+      {
+        label: 'inherit',
+        value: 'inherit'
+      },
+      {
+        label: 'initial',
+        value: 'initial'
+      },
+      {
+        label: 'unset',
+        value: 'unset'
       }
-      
-      if(isDown(directionY.value)){
-        count.value += 1
-      }
-
-    })
+    ]
     
     return {
       n,
       unit,
-
-      onMousewheel,
-      count
+      curentSize,
+      checked,
+      options
     }
   }
 })

@@ -3,35 +3,37 @@
 @import '../_assets/stylus/variable.stylus'
 @import '../_assets/stylus/tools.stylus'
 
-$cmp = prefixCls('props-panel')
-
-.{$cmp}{
-  width 260px
-  background $color_bg
-}
+$cmp = prefixCls(style-group)
 
 </style>
 <template>
-  <div :class='classNames.panel'>
-    <slot></slot>
+  <div :className='classNmaes.styleGrup'>
+    show me
   </div>
 </template>
-<script lang='ts'>
-import { defineComponent, ref } from "vue"
+<script>
+import {
+  defineComponent,
+  ref,
+  watch,
+  computed
+} from 'vue'
+
 import componentName from '../_utils/componentName'
 import className from "../_utils/className"
 
-
 export default defineComponent({
-  name: componentName('props-panel'),
+  name: componentName('style-group'),
+  props:{},
   setup(){
-    const classNames = ref({
-      panel: className('props-panel')
+    const classNmaes = ref({
+      styleGrup: className('style-group'),
     })
     
     return {
-      classNames
+      classNmaes
     }
   }
 })
+  
 </script>

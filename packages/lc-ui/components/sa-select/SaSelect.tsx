@@ -66,8 +66,6 @@ export default defineComponent({
       ...conf 
     } = $attrs as SelectProps
 
-    console.log('$attrs >>>>>', $attrs)
-
     const options = showEmptyOptions ? [emptyOptions, ...(_options || [])] : _options
     
     if(type === 'OPTIONS'){

@@ -1,7 +1,8 @@
 import { assert } from 'vx-tools'
 
 export const CLASS_PREFIX = 'lc-'
-export function className(className: string[]): {[k: string]: string}
+export function className(className: string[]): string[]
+export function className(className: {[k: string]: boolean}): {[k: string]: boolean}
 export function className(className: string): string
 
 /**
@@ -10,16 +11,25 @@ export function className(className: string): string
  * @returns
  * 
  * @example
- * 1. cmpName(name) => lc-name
- * 2. cmpName(['header', 'footer']) => { header: 'lc-header', 'footer': 'lc-footer' }
+ * cmpName(name) => lc-name
  */
-export default function className(className: string | string[]): (string | {[k: string]: string}) {
+
+export default function className(className: string | string[] | {[k: string]: boolean}): (string | string[] |{[k: string]: boolean}) {
+
+  if(assert.isString(className)){
+    return `${CLASS_PREFIX}${className}`
+  }
   
   if(assert.isArray(className)){
-    return className.reduce((acc, next) => {
-      return { ...acc, [next]: `${CLASS_PREFIX}${next}` }
+    return className.map(item => `${CLASS_PREFIX}${item}`) 
+  }
+
+  if(assert.isObject(className)){
+    return Object.entries(className).reduce((acc, [key, status]) =>{
+      return { ...acc, [`${CLASS_PREFIX}${key}`]: status }
     }, {})
   }
   
-  return `${CLASS_PREFIX}${className}`
+  console.error(`类名必须为字符，数组，对象: ${className}`)
+  return ''
 }

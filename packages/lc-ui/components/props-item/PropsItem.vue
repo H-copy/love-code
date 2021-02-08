@@ -15,20 +15,24 @@ $cmp = prefixCls(props-item)
     align-items center
   }
 
-  &.horizontal{
+  &.vertical{
     .{$cmp}-label{
       display block
       margin-bottom $margin_sm
     }
   }
 
-  &.vertical{
+  &.horizontal{
     display flex
     justify-content space-between
     align-items stretch
-    
+
     .{$cmp}-label{
       margin-right $margin_sm
+    }
+
+    & + &{
+      margin-bottom $margin_sm
     }
   }
 }
@@ -36,7 +40,7 @@ $cmp = prefixCls(props-item)
 </style>
 <template>
   <div :class='classNames.item'>
-    <label v-if='label' :class='classNames.label'>
+    <label v-if='label' :class='classNames.label' :style='labelWidthStyleProxy'>
       {{ label }}
     </label>
     <slot name='label'></slot>
@@ -47,11 +51,14 @@ $cmp = prefixCls(props-item)
 import {
   defineComponent,
   PropType,
-  ref
+  ref,
+  computed
 } from "vue"
+import { assert } from 'vx-tools'
 
 import componentName from '../_utils/componentName'
 import className from "../_utils/className"
+
 
 type LayoutType = 'horizontal' | 'vertical'
 
@@ -61,6 +68,9 @@ export default defineComponent({
     label: {
       type: String,
       default: ''
+    },
+    labelWidth: {
+      type: String as PropType<string | number | undefined>
     },
     layoutType: {
       type: String as PropType<LayoutType>,
@@ -72,9 +82,23 @@ export default defineComponent({
       item: [className('props-item'), props.layoutType],
       label: className('props-item-label')
     })
+
+    const labelWidthStyleProxy = computed(() => {
+
+      if(assert.isNumber(props.labelWidth)){
+        return { flex: '0 0 auto', width: `${props.labelWidth}px` }
+      }
+
+      if(assert.isString(props.labelWidth)){
+        return { flex: '0 0 auto', width: props.labelWidth }   
+      }
+
+      return {}
+    })
     
     return {
-      classNames
+      classNames,
+      labelWidthStyleProxy
     }
   }
 })

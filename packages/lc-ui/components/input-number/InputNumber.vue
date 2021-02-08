@@ -37,7 +37,7 @@ import {
 
 import componentName from '../_utils/componentName'
 import className from "../_utils/className"
-import useMousewheel from '../_hooks/useMousewheel'
+import { useMousewheel } from 'vx-hooks'
 
 export default defineComponent({
   name: componentName('input-number'),
@@ -68,14 +68,22 @@ export default defineComponent({
 
     const {
       isUp,
+      isDown,
       canUse,
       unUse,
+      directionY,
       wheelEvent,
       onMousewheel
     } = useMousewheel()
 
     watch(wheelEvent, () =>  {
-      isUp.value ? valueProxy.value -= props.step : valueProxy.value += props.step
+      if(isUp(directionY.value)){
+        valueProxy.value = props.value - 1
+      }
+
+      if(isDown(directionY.value)){
+        valueProxy.value = props.value + 1
+      }
     })
     
     const onFocus = canUse

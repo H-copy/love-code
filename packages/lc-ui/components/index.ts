@@ -7,6 +7,8 @@ import { InputNumber } from './input-number'
 import { InputSize } from './input-size'
 import { SaSelect } from './sa-select'
 import { SizeUnit } from './size-unit'
+import { Around } from './around'
+import { MiniDrawer } from './mini-drawer'
 
 const components = {
   Move,
@@ -17,6 +19,8 @@ const components = {
   InputSize,
   SaSelect,
   SizeUnit,
+  Around,
+  MiniDrawer
 }
 
 
@@ -41,4 +45,6 @@ export {
   InputSize,
   SaSelect,
   SizeUnit,
+  Around,
+  MiniDrawer
 }

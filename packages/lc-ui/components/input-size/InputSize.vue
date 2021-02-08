@@ -9,19 +9,26 @@ $cmp = prefixCls(input-size)
   display flex
   justify-content space-between
   align-items center
+
+  &-number{
+    flex: 1 1
+  }
 }
 
 </style>
 <template>
   <div :class='classNames.size'>
-    <lc-input-number v-model:value='size' :class='classNames.number'></lc-input-number>
-    <lc-size-unit v-model:value='unit' :class='classNames.unit'></lc-size-unit>
+    <div :class='classNames.number'>
+      <lc-input-number :disabled='disabled' v-model:value='size' ></lc-input-number>
+    </div>
+    <lc-size-unit :disabled='disabled' v-model:value='unit' :class='classNames.unit'></lc-size-unit>
   </div>
 </template>
 <script lang='ts'>
 import {
   defineComponent,
   ref,
+  watch
 } from 'vue'
 
 import componentName from '../_utils/componentName'
@@ -35,10 +42,19 @@ export default defineComponent({
     [InputNumber.name]: InputNumber,
     [SizeUnit.name]: SizeUnit
   },
+  props: {
+    value: {
+      type: String,
+    },
+    disabled: {
+      type: Boolean,
+      defautl: false
+    }
+  },
   setup(props, ctx){
     const classNames = ref({
       size: className('input-size'),
-      nubmer: className('input-size-nubmer'),
+      number: className('input-size-number'),
       unit: className('input-size-unit'),
     })
 
@@ -50,8 +66,41 @@ export default defineComponent({
     }
 
     const parse = (d: string) => {
-      console.log(unitOptions)
+      const unitSetting = unitOptions.find(option => {
+        return d.endsWith(option.value)
+      })
+
+      if(unitSetting === undefined){
+        console.error(`参数值错误,未找到匹配单位 ${d}`)
+        return [0, 'px']
+      }
+      
+      const unit = unitSetting.value
+      const size = parseFloat(d.replace(unit, '')) || 0
+      
+      return [size, unit]
     }
+
+    watch(() => props.value, (newVal, oldVal) => {
+
+      if(newVal === oldVal){
+        return
+      }
+
+      if(newVal === undefined || newVal === '' || newVal === null){
+        size.value = 0
+        update()
+        return
+      }
+      
+      const [_size, _unit] = parse(newVal)
+      size.value = _size as number
+      unit.value = _unit as string
+    }, { immediate: true })
+
+    watch([size, unit], () => {
+      update()
+    })
     
     return {
       classNames,
